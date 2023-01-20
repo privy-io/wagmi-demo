@@ -1,7 +1,6 @@
 import Head from "next/head";
 import { usePrivy } from "@privy-io/react-auth";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
-import { InjectedConnector } from "wagmi/connectors/injected";
 
 type buttonProps = {
   cta: string;
@@ -25,9 +24,7 @@ export default function Home() {
 
   // WAGMI hooks
   const { address, isConnected } = useAccount();
-  const { connect } = useConnect({
-    connector: new InjectedConnector(),
-  });
+  const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
 
   if (!ready) {
@@ -68,10 +65,16 @@ export default function Home() {
           <div className="p-3 flex flex-col items-start gap-2 border border-1 border-black rounded bg-slate-100">
             <h2 className="text-2xl">WAGMI</h2>
             {!isConnected && (
-              <Button onClick_={() => connect()} cta="Connect WAGMI" />
+              <Button
+                onClick_={() => {
+                  connect({ connector: connectors[0] });
+                }}
+                cta="Connect with WAGMI"
+              />
             )}
-            {isConnected && (
-              <Button onClick_={() => disconnect()} cta="Disconnect WAGMI" />
+
+            {address && isConnected && (
+              <Button onClick_={disconnect} cta="Disconnect from WAGMI" />
             )}
             <p>Address from WAGMI: {address}</p>
           </div>
