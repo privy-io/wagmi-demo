@@ -69,7 +69,7 @@ export default function Home() {
                 onClick_={() => {
                   connect({ connector: connectors[0] });
                 }}
-                cta="Connect with WAGMI"
+                cta={`Connect with WAGMI connector (${connectors[0]?.name})`}
               />
             )}
 

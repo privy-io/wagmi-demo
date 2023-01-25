@@ -1,23 +1,23 @@
 {
   "name": "privy-wagmi",
+  "type": "commonjs",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev -p 4000",
     "build": "next build",
     "start": "next start",
-    "clean": "rm -rf ./node_modules && rm -rf ./next/cache",
+    "clean": "rm -rf .next/cache && rm -rf ./node_modules",
     "lint": "next lint"
   },
   "dependencies": {
     "@ethersproject/address": "^5.7.0",
     "@next/font": "13.1.1",
-    "@privy-io/react-auth": "^1.11.0",
+    "@privy-io/react-auth": "file:../react-auth",
     "privy-wagmi-connector": "file:../privy-wagmi-connector",
     "@types/node": "18.11.18",
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.10",
-    "@wagmi/core": "^0.8.14",
     "eslint": "8.31.0",
     "eslint-config-next": "13.1.1",
     "ethers": "^5.7.2",
