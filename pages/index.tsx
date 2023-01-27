@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { usePrivy } from "@privy-io/react-auth";
-import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { useAccount, useConnect, useDisconnect, useSignMessage } from "wagmi";
 
 type buttonProps = {
   cta: string;
@@ -26,6 +26,11 @@ export default function Home() {
   const { address, isConnected } = useAccount();
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
+  const { isLoading: signLoading, signMessage } = useSignMessage({
+    onSuccess() {
+      console.log("Sign Message Success");
+    },
+  });
 
   if (!ready) {
     return;
@@ -54,29 +59,53 @@ export default function Home() {
           <div className="p-3 flex flex-col items-start gap-2 border border-1 border-black rounded bg-slate-100">
             <h2 className="text-2xl">Privy</h2>
             {ready && !authenticated && (
-              <Button onClick_={login} cta="Login with Privy" />
+              <>
+                <p>You are not authenticated with Privy</p>
+                <Button onClick_={login} cta="Login with Privy" />
+              </>
             )}
 
             {ready && authenticated && (
-              <Button onClick_={logout} cta="Logout from Privy" />
+              <>
+                <p>Address from Privy: {user?.wallet?.address}</p>
+                <Button onClick_={logout} cta="Logout from Privy" />
+              </>
             )}
-            <p>Address from Privy: {user?.wallet?.address}</p>
           </div>
           <div className="p-3 flex flex-col items-start gap-2 border border-1 border-black rounded bg-slate-100">
             <h2 className="text-2xl">WAGMI</h2>
             {!isConnected && (
-              <Button
-                onClick_={() => {
-                  connect({ connector: connectors[0] });
-                }}
-                cta={`Connect with WAGMI connector (${connectors[0]?.name})`}
-              />
+              <>
+                <p>You are not connected with WAGMI</p>
+                <Button
+                  onClick_={() => {
+                    connect({ connector: connectors[0] });
+                  }}
+                  cta={`Connect with WAGMI connector (${connectors[0]?.name})`}
+                />
+              </>
             )}
 
             {address && isConnected && (
-              <Button onClick_={disconnect} cta="Disconnect from WAGMI" />
+              <>
+                {!signLoading ? (
+                  <Button
+                    onClick_={() => {
+                      signMessage({
+                        message: "This is a message being signed with WAGMI",
+                      });
+                    }}
+                    cta="Sign a message with useSignMessage (WAGMI hook)"
+                  />
+                ) : (
+                  <p>Message is being signed...</p>
+                )}
+                <>
+                  <p>Address from WAGMI: {address}</p>
+                  <Button onClick_={disconnect} cta="Disconnect from WAGMI" />
+                </>
+              </>
             )}
-            <p>Address from WAGMI: {address}</p>
           </div>
         </div>
       </main>
