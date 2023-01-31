@@ -1,16 +1,27 @@
 import Head from "next/head";
 import { usePrivy } from "@privy-io/react-auth";
-import { useAccount, useConnect, useDisconnect, useSignMessage } from "wagmi";
+import type { WalletWithMetadata } from "@privy-io/react-auth";
+import {
+  useAccount,
+  useConnect,
+  useDisconnect,
+  useSignMessage,
+  useEnsName,
+} from "wagmi";
 
 type buttonProps = {
   cta: string;
   onClick_: () => void;
+  disabled?: boolean;
 };
-const Button = ({ cta, onClick_ }: buttonProps) => {
+const Button = ({ cta, onClick_, disabled }: buttonProps) => {
+  if (disabled) {
+  }
   return (
     <button
-      className="px-10 py-2 rounded bg-slate-800 text-white hover:cursor-pointer active:scale-75 transition-all"
+      className="px-10 py-2 rounded bg-slate-800 text-white enabled:hover:cursor-pointer enabled:active:scale-75 transition-all disabled:opacity-80"
       onClick={onClick_}
+      disabled={disabled}
     >
       {cta}
     </button>
@@ -19,13 +30,20 @@ const Button = ({ cta, onClick_ }: buttonProps) => {
 
 export default function Home() {
   // Privy hooks
-  const { login, logout } = usePrivy();
+  const { login, logout, linkWallet, unlinkWallet, setActiveWallet } =
+    usePrivy();
   const { ready, authenticated, user } = usePrivy();
+
+  const linkedAccounts = user?.linkedAccounts || [];
+  const wallets = linkedAccounts.filter(
+    (a) => a.type === "wallet"
+  ) as WalletWithMetadata[];
 
   // WAGMI hooks
   const { address, isConnected } = useAccount();
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
+  const { data: ensName, isError, isLoading, status } = useEnsName({ address });
   const { isLoading: signLoading, signMessage } = useSignMessage({
     onSuccess() {
       console.log("Sign Message Success");
@@ -36,6 +54,7 @@ export default function Home() {
     return;
   }
 
+  console.log("ensname:", ensName);
   return (
     <>
       <Head>
@@ -67,7 +86,32 @@ export default function Home() {
 
             {ready && authenticated && (
               <>
-                <p>Address from Privy: {user?.wallet?.address}</p>
+                <p>
+                  You are logged in with privy. Active wallet is{" "}
+                  <span className="font-mono">{user?.wallet?.address}</span>
+                </p>
+                {wallets.map((wallet) => {
+                  return (
+                    <div
+                      key={wallet.address}
+                      className="flex flex-row gap-2 min-w-full items-center justify-between p-4 bg-slate-50"
+                    >
+                      <p className="font-mono">{wallet.address}</p>
+                      <Button
+                        cta="Make active"
+                        onClick_={() => setActiveWallet(wallet.address)}
+                        disabled={wallet.address === user?.wallet?.address}
+                      />
+                      <Button
+                        cta="Unlink"
+                        onClick_={() => unlinkWallet(wallet.address)}
+                      />
+                    </div>
+                  );
+                })}
+                <Button onClick_={linkWallet} cta="Link another wallet" />
+
+                <br />
                 <Button onClick_={logout} cta="Logout from Privy" />
               </>
             )}
@@ -81,7 +125,7 @@ export default function Home() {
                   onClick_={() => {
                     connect({ connector: connectors[0] });
                   }}
-                  cta={`Connect with WAGMI connector (${connectors[0]?.name})`}
+                  cta={`Connect with WAGMI`}
                 />
               </>
             )}
@@ -95,13 +139,26 @@ export default function Home() {
                         message: "This is a message being signed with WAGMI",
                       });
                     }}
-                    cta="Sign a message with useSignMessage (WAGMI hook)"
+                    cta="Sign a message with useSignMessage"
                   />
                 ) : (
                   <p>Message is being signed...</p>
                 )}
                 <>
-                  <p>Address from WAGMI: {address}</p>
+                  <p>
+                    Address from WAGMI:{" "}
+                    <span className="font-mono">{address} </span>
+                    <br />
+                    Ens loading: {isLoading}
+                    <br />
+                    Ens status: {status}
+                    <br />
+                    Ens error: {isError}
+                    <br />
+                    Ens name: {ensName}
+                    {ensName && <span className="font-mono">{ensName}</span>}
+                  </p>
+                  <br />
                   <Button onClick_={disconnect} cta="Disconnect from WAGMI" />
                 </>
               </>
