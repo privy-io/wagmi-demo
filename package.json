@@ -4,17 +4,20 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 4000",
+    "dev": "next -p 4000",
     "build": "next build",
     "start": "next start",
     "clean": "rm -rf .next/cache && rm -rf ./node_modules",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prepare": "relative-deps",
+    "prestart": "relative-deps",
+    "prebuild": "relative-deps"
   },
   "dependencies": {
     "@ethersproject/address": "^5.7.0",
     "@next/font": "13.1.1",
-    "@privy-io/react-auth": ">=1.14.0",
-    "@privy-io/wagmi-connector": "0.0.1-beta.7",
+    "@privy-io/react-auth": "^1.15.0",
+    "@privy-io/wagmi-connector": "^0.0.2-beta.1",
     "@types/node": "18.11.18",
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.10",
@@ -31,6 +34,9 @@
   "devDependencies": {
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.21",
+    "relative-deps": "^1.0.7",
     "tailwindcss": "^3.2.4"
+  },
+  "relativeDependencies": {
   }
 }
