@@ -29,7 +29,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "typescript": "4.9.4",
-    "wagmi": "^0.11.7"
+    "wagmi": "^0.10.10"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",
