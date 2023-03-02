@@ -48,7 +48,7 @@ export default function Home() {
   ) as WalletWithMetadata[];
 
   // WAGMI hooks
-  const { address, isConnected } = useAccount();
+  const { address, isConnected, isConnecting, isDisconnected } = useAccount();
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
   const { data: ensName, isError, isLoading, status } = useEnsName({ address });
@@ -127,7 +127,11 @@ export default function Home() {
           </div>
           <div className="flex flex-col items-start p-3 border border-black rounded gap-2 border-1 bg-slate-100">
             <h2 className="text-2xl">WAGMI</h2>
-            {!isConnected && (
+            <p>isConnecting: {isConnecting}</p>
+            <p>isConnected: {isConnected}</p>
+            <p>isDisconnected: {isDisconnected}</p>
+            <p>address: {address}</p>
+            {!address && (
               <>
                 <p>You are not connected with WAGMI</p>
                 <Button
@@ -139,7 +143,7 @@ export default function Home() {
               </>
             )}
 
-            {address && isConnected && (
+            {address && (
               <>
                 {!signLoading ? (
                   <Button
