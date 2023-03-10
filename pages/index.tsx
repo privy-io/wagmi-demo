@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Head from "next/head";
 import { usePrivy } from "@privy-io/react-auth";
 import type { WalletWithMetadata } from "@privy-io/react-auth";
@@ -7,6 +8,8 @@ import {
   useDisconnect,
   useSignMessage,
   useEnsName,
+  useNetwork,
+  useSwitchNetwork,
 } from "wagmi";
 
 const shorten = (address: string | undefined) => {
@@ -49,6 +52,7 @@ export default function Home() {
 
   // WAGMI hooks
   const { address, isConnected, isConnecting, isDisconnected } = useAccount();
+  const { chain, chains: netChains } = useNetwork();
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
   const { data: ensName, isError, isLoading, status } = useEnsName({ address });
@@ -57,6 +61,26 @@ export default function Home() {
       console.log("Sign Message Success");
     },
   });
+  const {
+    chains,
+    error: switchNetworkError,
+    isLoading: networkLoading,
+    pendingChainId,
+    switchNetwork,
+  } = useSwitchNetwork({
+    throwForSwitchChainNotSupported: true,
+    onError(error) {
+      console.log("Error", error);
+    },
+    onMutate(args) {
+      console.log("Mutate", args);
+    },
+    onSettled(data, error) {
+      console.log("Settled", { data, error });
+    },
+  });
+
+  const [showChains, setShowChains] = useState(false);
 
   if (!ready) {
     return;
@@ -127,10 +151,15 @@ export default function Home() {
           </div>
           <div className="flex flex-col items-start p-3 border border-black rounded gap-2 border-1 bg-slate-100">
             <h2 className="text-2xl">WAGMI</h2>
-            <p>isConnecting: {isConnecting}</p>
-            <p>isConnected: {isConnected}</p>
-            <p>isDisconnected: {isDisconnected}</p>
-            <p>address: {address}</p>
+            {isConnecting ||
+              isConnected ||
+              (isDisconnected && (
+                <>
+                  <p>isConnecting: {isConnecting}</p>
+                  <p>isConnected: {isConnected}</p>
+                  <p>isDisconnected: {isDisconnected}</p>
+                </>
+              ))}
             {!address && (
               <>
                 <p>You are not connected with WAGMI</p>
@@ -145,6 +174,9 @@ export default function Home() {
 
             {address && (
               <>
+                <h2 className="text-2xl">useAccount</h2>
+                <p>address: {address}</p>
+                <h2 className="text-2xl">useSignMessage</h2>
                 {!signLoading ? (
                   <Button
                     onClick_={() => {
@@ -154,25 +186,74 @@ export default function Home() {
                         )}\nPrivy address: ${shorten(user?.wallet?.address)}`,
                       });
                     }}
-                    cta="Sign a message with useSignMessage"
+                    cta="Sign!"
                   />
                 ) : (
                   <p>Message is being signed...</p>
                 )}
                 <>
+                  <h2 className="text-2xl">useEnsName</h2>
                   <p>
-                    Address from WAGMI:{" "}
-                    <span className="font-mono">{shorten(address)} </span>
-                    <br />
-                    Ens loading: {isLoading}
-                    <br />
+                    {isLoading && (
+                      <>
+                        Ens loading: {isLoading}
+                        <br />
+                      </>
+                    )}
                     Ens status: {status}
                     <br />
-                    Ens error: {isError}
-                    <br />
+                    {isError && (
+                      <>
+                        Ens error: {isError}
+                        <br />
+                      </>
+                    )}
                     Ens name: <span className="font-mono">{ensName}</span>
                   </p>
-                  <br />
+
+                  <h2 className="text-2xl">useNetwork (chain switching)</h2>
+                  {chain && <p>Connected to {chain.name}</p>}
+                  <div className="flex flex-row items-center gap-2">
+                    <p>View chains object from useNetwork: </p>
+                    <Button
+                      onClick_={() => setShowChains(!showChains)}
+                      cta={showChains ? "Hide" : "Show"}
+                    />
+                  </div>
+                  {showChains && (
+                    <div className="w-full mt-2">
+                      <textarea
+                        rows={5}
+                        name="Chains"
+                        id="chains"
+                        className="w-full text-sm rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 p-1.5"
+                        defaultValue={JSON.stringify(netChains, null, 2)}
+                      />
+                    </div>
+                  )}
+                  <div className="flex flex-row items-center gap-2">
+                    <p>Switch chains: </p>
+                    {chains.map((x) => (
+                      <button
+                        disabled={!switchNetwork || x.id === chain?.id}
+                        key={x.id}
+                        onClick={() => switchNetwork?.(x.id)}
+                        className="px-10 py-2 text-white rounded min-w-[150px] bg-slate-800 enabled:hover:cursor-pointer enabled:active:scale-75 transition-all disabled:opacity-80"
+                      >
+                        {x.name}
+                        {networkLoading &&
+                          pendingChainId === x.id &&
+                          " (switching)"}
+                        {switchNetworkError && (
+                          <div>
+                            Network switch error:{" "}
+                            {JSON.stringify(switchNetworkError, null, 2)}
+                          </div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                  <h2 className="text-2xl">useDisconnect</h2>
                   <Button onClick_={disconnect} cta="Disconnect from WAGMI" />
                 </>
               </>
