@@ -107,7 +107,7 @@ export default function Home() {
 
   // WAGMI hooks
   const { address, isConnected, isConnecting, isDisconnected } = useAccount();
-  const { chain, chains: netChains } = useNetwork();
+  const { chain } = useNetwork();
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
   const { data: ensName, isError, isLoading, status } = useEnsName({ address });
@@ -135,8 +135,6 @@ export default function Home() {
     },
   });
 
-  const [showChains, setShowChains] = useState(false);
-
   if (!ready) {
     return;
   }
@@ -162,7 +160,7 @@ export default function Home() {
         </p>
         <div className="mt-4 grid grid-cols-2 gap-4">
           <div className="flex flex-col items-start p-3 border border-black rounded gap-2 border-1 bg-slate-100">
-            <h2 className="text-2xl">Privy</h2>
+            <h1 className="text-4xl font-bold">Privy</h1>
             {ready && !authenticated && (
               <>
                 <p>You are not authenticated with Privy</p>
@@ -209,7 +207,7 @@ export default function Home() {
             )}
           </div>
           <div className="flex flex-col items-start p-3 border border-black rounded gap-2 border-1 bg-slate-100">
-            <h2 className="text-2xl">WAGMI</h2>
+            <h1 className="text-4xl font-bold">WAGMI</h1>
             <p>
               Connection status: {isConnecting && <span>🟡 connecting...</span>}
               {isConnected && <span>🟢 connected.</span>}
@@ -217,14 +215,14 @@ export default function Home() {
             </p>
             {isConnected ? (
               <>
-                <h2 className="text-2xl">useAccount</h2>
+                <h2 className="mt-6 text-2xl">useAccount</h2>
                 <p>
                   address:{" "}
                   <span className="px-2 py-1 font-mono bg-slate-200 rounded-xl">
                     {address}
                   </span>
                 </p>
-                <h2 className="text-2xl">useSignMessage</h2>
+                <h2 className="mt-6 text-2xl">useSignMessage</h2>
                 {!signLoading ? (
                   <Button
                     onClick_={() => {
@@ -240,41 +238,41 @@ export default function Home() {
                   <p>Message is being signed...</p>
                 )}
 
-                <h2 className="text-2xl">useSignTypedMessage</h2>
+                <h2 className="mt-6 text-2xl">useSignTypedMessage</h2>
                 <UseSignTypedMessage />
 
-                <h2 className="text-2xl">useEnsName</h2>
+                <h2 className="mt-6 text-2xl">useEnsName</h2>
+                {isLoading && (
+                  <p>
+                    Ens loading: {isLoading}
+                    <br />
+                  </p>
+                )}
                 <p>
-                  {isLoading && (
-                    <>
-                      Ens loading: {isLoading}
-                      <br />
-                    </>
-                  )}
                   Ens status:{" "}
                   <span className="px-2 py-2 font-mono bg-slate-200 rounded-xl">
                     {status}
                   </span>
                   <br />
-                  {isError && (
-                    <>
-                      Ens error: {isError}
-                      <br />
-                    </>
-                  )}
-                  {ensName ? (
-                    <>
-                      Ens name:{" "}
-                      <span className="px-2 py-1 font-mono bg-slate-200 rounded-xl">
-                        {ensName}
-                      </span>
-                    </>
-                  ) : (
-                    <p>No ens name for this address.</p>
-                  )}
                 </p>
+                {isError && (
+                  <p>
+                    Ens error: {isError}
+                    <br />
+                  </p>
+                )}
+                {ensName ? (
+                  <p>
+                    Ens name:{" "}
+                    <span className="px-2 py-1 font-mono bg-slate-200 rounded-xl">
+                      {ensName}
+                    </span>
+                  </p>
+                ) : (
+                  <p>No ens name for this address.</p>
+                )}
 
-                <h2 className="text-2xl">useNetwork (chain switching)</h2>
+                <h2 className="mt-6 text-2xl">useNetwork (chain switching)</h2>
                 {chain && (
                   <p>
                     Connected to{" "}
@@ -282,24 +280,6 @@ export default function Home() {
                       {chain.name}
                     </span>
                   </p>
-                )}
-                <div className="flex flex-row items-center gap-2">
-                  <p>View chains object from useNetwork: </p>
-                  <Button
-                    onClick_={() => setShowChains(!showChains)}
-                    cta={showChains ? "Hide" : "Show"}
-                  />
-                </div>
-                {showChains && (
-                  <div className="w-full mt-2">
-                    <textarea
-                      rows={5}
-                      name="Chains"
-                      id="chains"
-                      className="w-full text-sm rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 p-1.5"
-                      defaultValue={JSON.stringify(netChains, null, 2)}
-                    />
-                  </div>
                 )}
                 <div className="flex flex-row items-center gap-2">
                   <p>Switch chains: </p>
@@ -323,7 +303,8 @@ export default function Home() {
                     </button>
                   ))}
                 </div>
-                <h2 className="text-2xl">useDisconnect</h2>
+
+                <h2 className="mt-6 text-2xl">useDisconnect</h2>
                 <Button onClick_={disconnect} cta="Disconnect from WAGMI" />
               </>
             ) : (
