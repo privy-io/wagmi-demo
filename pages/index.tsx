@@ -176,7 +176,9 @@ export default function Home() {
                   You are logged in with privy.
                   <br />
                   Active wallet is{" "}
-                  <span className="font-mono">{user?.wallet?.address}</span>
+                  <span className="px-2 py-1 font-mono bg-slate-200 rounded-xl">
+                    {user?.wallet?.address}
+                  </span>
                 </p>
                 {wallets.map((wallet) => {
                   return (
@@ -184,7 +186,9 @@ export default function Home() {
                       key={wallet.address}
                       className="flex flex-row items-center justify-between min-w-full p-4 gap-2 bg-slate-50"
                     >
-                      <p className="font-mono">{shorten(wallet.address)}</p>
+                      <p className="px-2 py-1 font-mono bg-slate-200 rounded-xl">
+                        {shorten(wallet.address)}
+                      </p>
                       <Button
                         cta="Make active"
                         onClick_={() => setActiveWallet(wallet.address)}
@@ -215,7 +219,10 @@ export default function Home() {
               <>
                 <h2 className="text-2xl">useAccount</h2>
                 <p>
-                  address: <span className="font-mono">{address}</span>
+                  address:{" "}
+                  <span className="px-2 py-1 font-mono bg-slate-200 rounded-xl">
+                    {address}
+                  </span>
                 </p>
                 <h2 className="text-2xl">useSignMessage</h2>
                 {!signLoading ? (
@@ -244,7 +251,10 @@ export default function Home() {
                       <br />
                     </>
                   )}
-                  Ens status: {status}
+                  Ens status:{" "}
+                  <span className="px-2 py-2 font-mono bg-slate-200 rounded-xl">
+                    {status}
+                  </span>
                   <br />
                   {isError && (
                     <>
@@ -252,11 +262,27 @@ export default function Home() {
                       <br />
                     </>
                   )}
-                  Ens name: <span className="font-mono">{ensName}</span>
+                  {ensName ? (
+                    <>
+                      Ens name:{" "}
+                      <span className="px-2 py-1 font-mono bg-slate-200 rounded-xl">
+                        {ensName}
+                      </span>
+                    </>
+                  ) : (
+                    <p>No ens name for this address.</p>
+                  )}
                 </p>
 
                 <h2 className="text-2xl">useNetwork (chain switching)</h2>
-                {chain && <p>Connected to {chain.name}</p>}
+                {chain && (
+                  <p>
+                    Connected to{" "}
+                    <span className="px-2 py-1 font-mono bg-slate-200 rounded-xl">
+                      {chain.name}
+                    </span>
+                  </p>
+                )}
                 <div className="flex flex-row items-center gap-2">
                   <p>View chains object from useNetwork: </p>
                   <Button
