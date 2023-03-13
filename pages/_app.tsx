@@ -9,8 +9,8 @@ import { infuraProvider } from "wagmi/providers/infura";
 const configureChainsConfig = configureChains(
   [mainnet, goerli],
   [
-    alchemyProvider({ apiKey: process.env.ALCHEMY_API_KEY as string }),
-    infuraProvider({ apiKey: process.env.INFURA_API_KEY as string }),
+    alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY as string }),
+    infuraProvider({ apiKey: process.env.NEXT_PUBLIC_INFURA_API_KEY as string }),
   ]
 );
 
