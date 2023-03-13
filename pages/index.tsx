@@ -226,7 +226,7 @@ export default function Home() {
               {isConnected && <span>🟢 connected.</span>}
               {isDisconnected && <span> 🔴 disconnected.</span>}
             </p>
-            {isConnected ? (
+            {isConnected && (
               <>
                 <h2 className="mt-6 text-2xl">useAccount</h2>
                 <p>
@@ -319,15 +319,6 @@ export default function Home() {
 
                 <h2 className="mt-6 text-2xl">useDisconnect</h2>
                 <Button onClick_={disconnect} cta="Disconnect from WAGMI" />
-              </>
-            ) : (
-              <>
-                <Button
-                  onClick_={() => {
-                    connect({ connector: connectors[0] });
-                  }}
-                  cta={`Connect with WAGMI`}
-                />
               </>
             )}
           </div>
