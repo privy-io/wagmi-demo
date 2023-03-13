@@ -40,6 +40,12 @@ const Button = ({ cta, onClick_, disabled }: buttonProps) => {
   );
 };
 
+const MonoLabel = ({ label }: { label: string }) => {
+  return (
+    <span className="px-2 py-1 font-mono bg-slate-200 rounded-xl">{label}</span>
+  );
+};
+
 const UseSignTypedMessage = () => {
   // All properties on a domain are optional
   const domain = {
@@ -187,9 +193,7 @@ export default function Home() {
                   You are logged in with privy.
                   <br />
                   Active wallet is{" "}
-                  <span className="px-2 py-1 font-mono bg-slate-200 rounded-xl">
-                    {user?.wallet?.address}
-                  </span>
+                  <MonoLabel label={user?.wallet?.address || ""} />
                 </p>
                 {wallets.map((wallet) => {
                   return (
@@ -197,9 +201,9 @@ export default function Home() {
                       key={wallet.address}
                       className="flex flex-row items-center justify-between min-w-full p-4 gap-2 bg-slate-50"
                     >
-                      <p className="px-2 py-1 font-mono bg-slate-200 rounded-xl">
-                        {shorten(wallet.address)}
-                      </p>
+                      <div>
+                        <MonoLabel label={shorten(wallet.address)} />
+                      </div>
                       <Button
                         cta="Make active"
                         onClick_={() => setActiveWallet(wallet.address)}
@@ -226,14 +230,11 @@ export default function Home() {
               {isConnected && <span>🟢 connected.</span>}
               {isDisconnected && <span> 🔴 disconnected.</span>}
             </p>
-            {isConnected && (
+            {isConnected && address && (
               <>
                 <h2 className="mt-6 text-2xl">useAccount</h2>
                 <p>
-                  address:{" "}
-                  <span className="px-2 py-1 font-mono bg-slate-200 rounded-xl">
-                    {address}
-                  </span>
+                  address: <MonoLabel label={address} />
                 </p>
                 <h2 className="mt-6 text-2xl">useSignMessage</h2>
                 {!signLoading ? (
@@ -262,10 +263,7 @@ export default function Home() {
                   </p>
                 )}
                 <p>
-                  Ens status:{" "}
-                  <span className="px-2 py-1 font-mono bg-slate-200 rounded-xl">
-                    {status}
-                  </span>
+                  Ens status: <MonoLabel label={status} />
                   <br />
                 </p>
                 {isError && (
@@ -276,10 +274,7 @@ export default function Home() {
                 )}
                 {ensName ? (
                   <p>
-                    Ens name:{" "}
-                    <span className="px-2 py-1 font-mono bg-slate-200 rounded-xl">
-                      {ensName}
-                    </span>
+                    Ens name: <MonoLabel label={ensName} />
                   </p>
                 ) : (
                   <p>No ens name for this address.</p>
@@ -288,10 +283,7 @@ export default function Home() {
                 <h2 className="mt-6 text-2xl">useNetwork (chain switching)</h2>
                 {chain && (
                   <p>
-                    Connected to{" "}
-                    <span className="px-2 py-1 font-mono bg-slate-200 rounded-xl">
-                      {chain.name}
-                    </span>
+                    Connected to <MonoLabel label={chain.name} />
                   </p>
                 )}
                 <div className="flex flex-row items-center gap-2">
