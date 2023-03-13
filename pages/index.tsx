@@ -31,7 +31,7 @@ const Button = ({ cta, onClick_, disabled }: buttonProps) => {
   }
   return (
     <button
-      className="px-10 py-2 text-white rounded bg-slate-800 enabled:hover:cursor-pointer enabled:active:scale-75 transition-all disabled:opacity-80"
+      className="px-10 py-2 text-white rounded bg-slate-800 enabled:hover:cursor-pointer enabled:active:scale-75 transition-all disabled:opacity-80 hover:bg-slate-900 active:bg-slate-900"
       onClick={onClick_}
       disabled={disabled}
     >
@@ -114,7 +114,6 @@ export default function Home() {
   // WAGMI hooks
   const { address, isConnected, isConnecting, isDisconnected } = useAccount();
   const { chain } = useNetwork();
-  const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
   const { data: ensName, isError, isLoading, status } = useEnsName({ address });
   const { isLoading: signLoading, signMessage } = useSignMessage({
