@@ -263,7 +263,7 @@ export default function Home() {
                 )}
                 <p>
                   Ens status:{" "}
-                  <span className="px-2 py-2 font-mono bg-slate-200 rounded-xl">
+                  <span className="px-2 py-1 font-mono bg-slate-200 rounded-xl">
                     {status}
                   </span>
                   <br />
