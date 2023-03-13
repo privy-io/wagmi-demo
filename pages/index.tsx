@@ -70,13 +70,13 @@ export default function Home() {
   } = useSwitchNetwork({
     throwForSwitchChainNotSupported: true,
     onError(error) {
-      console.log("Error", error);
+      console.log("Switch network error", error);
     },
     onMutate(args) {
-      console.log("Mutate", args);
+      console.log("Switch network mutated:", args);
     },
     onSettled(data, error) {
-      console.log("Settled", { data, error });
+      console.log("Switch network settled", { data, error });
     },
   });
 
@@ -151,18 +151,13 @@ export default function Home() {
           </div>
           <div className="flex flex-col items-start p-3 border border-black rounded gap-2 border-1 bg-slate-100">
             <h2 className="text-2xl">WAGMI</h2>
-            {isConnecting ||
-              isConnected ||
-              (isDisconnected && (
-                <>
-                  <p>isConnecting: {isConnecting}</p>
-                  <p>isConnected: {isConnected}</p>
-                  <p>isDisconnected: {isDisconnected}</p>
-                </>
-              ))}
+            <p>
+              Connection status: {isConnecting && <span>🟡 connecting...</span>}
+              {isConnected && <span>🟢 connected.</span>}
+              {isDisconnected && <span> 🔴 disconnected.</span>}
+            </p>
             {!address && (
               <>
-                <p>You are not connected with WAGMI</p>
                 <Button
                   onClick_={() => {
                     connect({ connector: connectors[0] });
@@ -175,7 +170,9 @@ export default function Home() {
             {address && (
               <>
                 <h2 className="text-2xl">useAccount</h2>
-                <p>address: {address}</p>
+                <p>
+                  address: <span className="font-mono">{address}</span>
+                </p>
                 <h2 className="text-2xl">useSignMessage</h2>
                 {!signLoading ? (
                   <Button
