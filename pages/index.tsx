@@ -1,4 +1,4 @@
-import { useState } from "react";
+import Image from "next/image";
 import Head from "next/head";
 import { usePrivy } from "@privy-io/react-auth";
 import type { WalletWithMetadata } from "@privy-io/react-auth";
@@ -151,14 +151,27 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="min-h-screen p-4 bg-slate-200 text-slate-800">
-        <h1 className="text-4xl text-center">WAGMI & Privy demo</h1>
-        <p className="text-center">
+        <Image
+          className="mx-auto rounded-lg"
+          src="/4_1 logo.png"
+          alt="logo"
+          width={400}
+          height={100}
+        />
+        <p className="my-4 text-center">
           This demo showcases how you can setup WAGMI and Privy to work
-          together.
+          together. Login below with Privy to try it out!
           <br />
-          Login below to observe the behavior.
+          For more information, see{" "}
+          <a
+            href="https://docs.privy.io/guide/guides/wagmi"
+            className="font-bold underline"
+          >
+            our integration guide
+          </a>
+          .
         </p>
-        <div className="mt-4 grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col items-start p-3 border border-black rounded gap-2 border-1 bg-slate-100">
             <h1 className="text-4xl font-bold">Privy</h1>
             {ready && !authenticated && (
