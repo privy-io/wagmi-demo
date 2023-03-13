@@ -10,6 +10,7 @@ import {
   useEnsName,
   useNetwork,
   useSwitchNetwork,
+  useSignTypedData,
 } from "wagmi";
 
 const shorten = (address: string | undefined) => {
@@ -39,6 +40,60 @@ const Button = ({ cta, onClick_, disabled }: buttonProps) => {
   );
 };
 
+const UseSignTypedMessage = () => {
+  // All properties on a domain are optional
+  const domain = {
+    name: "Ether Mail",
+    version: "1",
+    chainId: 1,
+    verifyingContract: "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
+  } as const;
+
+  // The named list of all type definitions
+  const types = {
+    Person: [
+      { name: "name", type: "string" },
+      { name: "wallet", type: "address" },
+    ],
+    Mail: [
+      { name: "from", type: "Person" },
+      { name: "to", type: "Person" },
+      { name: "contents", type: "string" },
+    ],
+  } as const;
+
+  const value = {
+    from: {
+      name: "Cow",
+      wallet: "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
+    },
+    to: {
+      name: "Bob",
+      wallet: "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB",
+    },
+    contents: "Hello, Bob!",
+  } as const;
+  const { data, isError, isLoading, isSuccess, signTypedData } =
+    useSignTypedData({
+      domain,
+      types,
+      value,
+    });
+
+  return (
+    <div>
+      <Button
+        disabled={isLoading}
+        onClick_={() => {
+          signTypedData();
+        }}
+        cta="Sign typed data!"
+      />
+      {isSuccess && <div>Signature: {shorten(data)}</div>}
+      {isError && <div>Error signing message</div>}
+    </div>
+  );
+};
 export default function Home() {
   // Privy hooks
   const { login, logout, linkWallet, unlinkWallet, setActiveWallet } =
@@ -177,71 +232,73 @@ export default function Home() {
                 ) : (
                   <p>Message is being signed...</p>
                 )}
-                <>
-                  <h2 className="text-2xl">useEnsName</h2>
-                  <p>
-                    {isLoading && (
-                      <>
-                        Ens loading: {isLoading}
-                        <br />
-                      </>
-                    )}
-                    Ens status: {status}
-                    <br />
-                    {isError && (
-                      <>
-                        Ens error: {isError}
-                        <br />
-                      </>
-                    )}
-                    Ens name: <span className="font-mono">{ensName}</span>
-                  </p>
 
-                  <h2 className="text-2xl">useNetwork (chain switching)</h2>
-                  {chain && <p>Connected to {chain.name}</p>}
-                  <div className="flex flex-row items-center gap-2">
-                    <p>View chains object from useNetwork: </p>
-                    <Button
-                      onClick_={() => setShowChains(!showChains)}
-                      cta={showChains ? "Hide" : "Show"}
+                <h2 className="text-2xl">useSignTypedMessage</h2>
+                <UseSignTypedMessage />
+
+                <h2 className="text-2xl">useEnsName</h2>
+                <p>
+                  {isLoading && (
+                    <>
+                      Ens loading: {isLoading}
+                      <br />
+                    </>
+                  )}
+                  Ens status: {status}
+                  <br />
+                  {isError && (
+                    <>
+                      Ens error: {isError}
+                      <br />
+                    </>
+                  )}
+                  Ens name: <span className="font-mono">{ensName}</span>
+                </p>
+
+                <h2 className="text-2xl">useNetwork (chain switching)</h2>
+                {chain && <p>Connected to {chain.name}</p>}
+                <div className="flex flex-row items-center gap-2">
+                  <p>View chains object from useNetwork: </p>
+                  <Button
+                    onClick_={() => setShowChains(!showChains)}
+                    cta={showChains ? "Hide" : "Show"}
+                  />
+                </div>
+                {showChains && (
+                  <div className="w-full mt-2">
+                    <textarea
+                      rows={5}
+                      name="Chains"
+                      id="chains"
+                      className="w-full text-sm rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 p-1.5"
+                      defaultValue={JSON.stringify(netChains, null, 2)}
                     />
                   </div>
-                  {showChains && (
-                    <div className="w-full mt-2">
-                      <textarea
-                        rows={5}
-                        name="Chains"
-                        id="chains"
-                        className="w-full text-sm rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 p-1.5"
-                        defaultValue={JSON.stringify(netChains, null, 2)}
-                      />
-                    </div>
-                  )}
-                  <div className="flex flex-row items-center gap-2">
-                    <p>Switch chains: </p>
-                    {chains.map((x) => (
-                      <button
-                        disabled={!switchNetwork || x.id === chain?.id}
-                        key={x.id}
-                        onClick={() => switchNetwork?.(x.id)}
-                        className="px-10 py-2 text-white rounded min-w-[150px] bg-slate-800 enabled:hover:cursor-pointer enabled:active:scale-75 transition-all disabled:opacity-80"
-                      >
-                        {x.name}
-                        {networkLoading &&
-                          pendingChainId === x.id &&
-                          " (switching)"}
-                        {switchNetworkError && (
-                          <div>
-                            Network switch error:{" "}
-                            {JSON.stringify(switchNetworkError, null, 2)}
-                          </div>
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                  <h2 className="text-2xl">useDisconnect</h2>
-                  <Button onClick_={disconnect} cta="Disconnect from WAGMI" />
-                </>
+                )}
+                <div className="flex flex-row items-center gap-2">
+                  <p>Switch chains: </p>
+                  {chains.map((x) => (
+                    <button
+                      disabled={!switchNetwork || x.id === chain?.id}
+                      key={x.id}
+                      onClick={() => switchNetwork?.(x.id)}
+                      className="px-10 py-2 text-white rounded min-w-[150px] bg-slate-800 enabled:hover:cursor-pointer enabled:active:scale-75 transition-all disabled:opacity-80"
+                    >
+                      {x.name}
+                      {networkLoading &&
+                        pendingChainId === x.id &&
+                        " (switching)"}
+                      {switchNetworkError && (
+                        <div>
+                          Network switch error:{" "}
+                          {JSON.stringify(switchNetworkError, null, 2)}
+                        </div>
+                      )}
+                    </button>
+                  ))}
+                </div>
+                <h2 className="text-2xl">useDisconnect</h2>
+                <Button onClick_={disconnect} cta="Disconnect from WAGMI" />
               </>
             ) : (
               <>
