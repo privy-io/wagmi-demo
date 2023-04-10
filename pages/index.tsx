@@ -176,7 +176,7 @@ export default function Home() {
           </a>
           .
         </p>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div className="flex flex-col items-start p-3 border border-black rounded gap-2 border-1 bg-slate-100">
             <h1 className="text-4xl font-bold">Privy</h1>
             {ready && !authenticated && (
