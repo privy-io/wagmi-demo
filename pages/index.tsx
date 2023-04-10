@@ -198,7 +198,7 @@ export default function Home() {
                   return (
                     <div
                       key={wallet.address}
-                      className="flex flex-row items-center justify-between min-w-full p-4 gap-2 bg-slate-50"
+                      className="flex flex-row flex-wrap items-center justify-between min-w-full p-4 gap-2 bg-slate-50"
                     >
                       <div>
                         <MonoLabel label={shorten(wallet.address)} />
