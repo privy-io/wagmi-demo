@@ -7,6 +7,7 @@ import Button from "components/Button";
 import SignTypedData from "components/SignTypedData";
 import EnsName from "components/EnsName";
 import EnsAddress from "components/EnsAddress";
+import EnsAvatar from "components/EnsAvatar";
 import SignMessage from "components/SignMessage";
 import SwitchNetwork from "components/SwitchNetwork";
 import Balance from "components/Balance";
@@ -135,6 +136,7 @@ export default function Home() {
                 <SignTypedData />
                 <EnsName />
                 <EnsAddress />
+                <EnsAvatar />
                 <SwitchNetwork />
                 <BlockNumber />
 
