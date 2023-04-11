@@ -2,43 +2,13 @@ import Image from "next/image";
 import Head from "next/head";
 import { usePrivy } from "@privy-io/react-auth";
 import type { WalletWithMetadata } from "@privy-io/react-auth";
-import {
-  useAccount,
-  useConnect,
-  useDisconnect,
-  useSignMessage,
-  useEnsName,
-  useNetwork,
-  useSwitchNetwork,
-  useSignTypedData,
-} from "wagmi";
-
-const shorten = (address: string | undefined) => {
-  if (!address) return "";
-  return `${address.substring(0, 6)}...${address.substring(
-    address.length - 4,
-    address.length
-  )}`;
-};
-
-type buttonProps = {
-  cta: string;
-  onClick_: () => void;
-  disabled?: boolean;
-};
-const Button = ({ cta, onClick_, disabled }: buttonProps) => {
-  if (disabled) {
-  }
-  return (
-    <button
-      className="px-10 py-2 text-white rounded bg-slate-800 enabled:hover:cursor-pointer enabled:active:scale-75 transition-all disabled:opacity-80 hover:bg-slate-900 active:bg-slate-900"
-      onClick={onClick_}
-      disabled={disabled}
-    >
-      {cta}
-    </button>
-  );
-};
+import { shorten } from "lib/utils";
+import Button from "components/Button";
+import SignTypedData from "components/SignTypedData";
+import EnsName from "components/EnsName";
+import SignMessage from "components/SignMessage";
+import SwitchNetwork from "components/SwitchNetwork";
+import { useAccount, useDisconnect } from "wagmi";
 
 const MonoLabel = ({ label }: { label: string }) => {
   return (
@@ -46,60 +16,6 @@ const MonoLabel = ({ label }: { label: string }) => {
   );
 };
 
-const UseSignTypedMessage = () => {
-  // All properties on a domain are optional
-  const domain = {
-    name: "Ether Mail",
-    version: "1",
-    chainId: 1,
-    verifyingContract: "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
-  } as const;
-
-  // The named list of all type definitions
-  const types = {
-    Person: [
-      { name: "name", type: "string" },
-      { name: "wallet", type: "address" },
-    ],
-    Mail: [
-      { name: "from", type: "Person" },
-      { name: "to", type: "Person" },
-      { name: "contents", type: "string" },
-    ],
-  } as const;
-
-  const value = {
-    from: {
-      name: "Cow",
-      wallet: "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
-    },
-    to: {
-      name: "Bob",
-      wallet: "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB",
-    },
-    contents: "Hello, Bob!",
-  } as const;
-  const { data, isError, isLoading, isSuccess, signTypedData } =
-    useSignTypedData({
-      domain,
-      types,
-      value,
-    });
-
-  return (
-    <div>
-      <Button
-        disabled={isLoading}
-        onClick_={() => {
-          signTypedData();
-        }}
-        cta="Sign typed data!"
-      />
-      {isSuccess && <div>Signature: {shorten(data)}</div>}
-      {isError && <div>Error signing message</div>}
-    </div>
-  );
-};
 export default function Home() {
   // Privy hooks
   const { login, logout, linkWallet, unlinkWallet, setActiveWallet } =
@@ -113,32 +29,7 @@ export default function Home() {
 
   // WAGMI hooks
   const { address, isConnected, isConnecting, isDisconnected } = useAccount();
-  const { chain } = useNetwork();
   const { disconnect } = useDisconnect();
-  const { data: ensName, isError, isLoading, status } = useEnsName({ address });
-  const { isLoading: signLoading, signMessage } = useSignMessage({
-    onSuccess() {
-      console.log("Sign Message Success");
-    },
-  });
-  const {
-    chains,
-    error: switchNetworkError,
-    isLoading: networkLoading,
-    pendingChainId,
-    switchNetwork,
-  } = useSwitchNetwork({
-    throwForSwitchChainNotSupported: true,
-    onError(error) {
-      console.log("Switch network error", error);
-    },
-    onMutate(args) {
-      console.log("Switch network mutated:", args);
-    },
-    onSettled(data, error) {
-      console.log("Switch network settled", { data, error });
-    },
-  });
 
   if (!ready) {
     return;
@@ -235,78 +126,11 @@ export default function Home() {
                 <p>
                   address: <MonoLabel label={address} />
                 </p>
-                <h2 className="mt-6 text-2xl">useSignMessage</h2>
-                {!signLoading ? (
-                  <Button
-                    onClick_={() => {
-                      signMessage({
-                        message: `Signing with WAGMI\nWAGMI address: ${shorten(
-                          address
-                        )}\nPrivy address: ${shorten(user?.wallet?.address)}`,
-                      });
-                    }}
-                    cta="Sign!"
-                  />
-                ) : (
-                  <p>Message is being signed...</p>
-                )}
 
-                <h2 className="mt-6 text-2xl">useSignTypedMessage</h2>
-                <UseSignTypedMessage />
-
-                <h2 className="mt-6 text-2xl">useEnsName</h2>
-                {isLoading && (
-                  <p>
-                    Ens loading: {isLoading}
-                    <br />
-                  </p>
-                )}
-                <p>
-                  Ens status: <MonoLabel label={status} />
-                  <br />
-                </p>
-                {isError && (
-                  <p>
-                    Ens error: {isError}
-                    <br />
-                  </p>
-                )}
-                {ensName ? (
-                  <p>
-                    Ens name: <MonoLabel label={ensName} />
-                  </p>
-                ) : (
-                  <p>No ens name for this address.</p>
-                )}
-
-                <h2 className="mt-6 text-2xl">useNetwork (chain switching)</h2>
-                {chain && (
-                  <p>
-                    Connected to <MonoLabel label={chain.name} />
-                  </p>
-                )}
-                <div className="flex flex-row items-center gap-2">
-                  <p>Switch chains: </p>
-                  {chains.map((x) => (
-                    <button
-                      disabled={!switchNetwork || x.id === chain?.id}
-                      key={x.id}
-                      onClick={() => switchNetwork?.(x.id)}
-                      className="px-10 py-2 text-white rounded min-w-[150px] bg-slate-800 enabled:hover:cursor-pointer enabled:active:scale-75 transition-all disabled:opacity-80"
-                    >
-                      {x.name}
-                      {networkLoading &&
-                        pendingChainId === x.id &&
-                        " (switching)"}
-                      {switchNetworkError && (
-                        <div>
-                          Network switch error:{" "}
-                          {JSON.stringify(switchNetworkError, null, 2)}
-                        </div>
-                      )}
-                    </button>
-                  ))}
-                </div>
+                <SignMessage />
+                <SignTypedData />
+                <EnsName />
+                <SwitchNetwork />
 
                 <h2 className="mt-6 text-2xl">useDisconnect</h2>
                 <Button onClick_={disconnect} cta="Disconnect from WAGMI" />

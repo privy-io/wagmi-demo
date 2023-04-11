@@ -4,6 +4,7 @@
       "es2021",
       "DOM"
     ],
+    "baseUrl": "./",
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
