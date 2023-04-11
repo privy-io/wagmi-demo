@@ -8,6 +8,7 @@ import SignTypedData from "components/SignTypedData";
 import EnsName from "components/EnsName";
 import SignMessage from "components/SignMessage";
 import SwitchNetwork from "components/SwitchNetwork";
+import Balance from "components/Balance";
 import { useAccount, useDisconnect } from "wagmi";
 
 const MonoLabel = ({ label }: { label: string }) => {
@@ -127,6 +128,7 @@ export default function Home() {
                   address: <MonoLabel label={address} />
                 </p>
 
+                <Balance />
                 <SignMessage />
                 <SignTypedData />
                 <EnsName />
