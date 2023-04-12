@@ -1,7 +1,7 @@
 import { useEnsAvatar } from "wagmi";
 import Wrapper from "components/Wrapper";
 
-const EnsAddress = () => {
+const EnsAvatar = () => {
   const { data, isError, isLoading } = useEnsAvatar({
     address: "0xd8da6bf26964af9d7eed9e03e53415d37aa96045", // vitalik.eth
   });
@@ -17,4 +17,4 @@ const EnsAddress = () => {
   );
 };
 
-export default EnsAddress;
+export default EnsAvatar;

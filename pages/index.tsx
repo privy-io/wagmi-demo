@@ -7,12 +7,13 @@ import Button from "components/Button";
 import SignTypedData from "components/SignTypedData";
 import EnsName from "components/EnsName";
 import EnsAddress from "components/EnsAddress";
+import EnsResolver from "components/EnsResolver";
 import EnsAvatar from "components/EnsAvatar";
 import SignMessage from "components/SignMessage";
 import SwitchNetwork from "components/SwitchNetwork";
 import Balance from "components/Balance";
 import BlockNumber from "components/BlockNumber";
-import { useAccount, useDisconnect } from "wagmi";
+import { useAccount, useDisconnect, useSwitchNetwork } from "wagmi";
 
 const MonoLabel = ({ label }: { label: string }) => {
   return (
@@ -33,6 +34,9 @@ export default function Home() {
 
   // WAGMI hooks
   const { address, isConnected, isConnecting, isDisconnected } = useAccount();
+  // Importing this fixes useSigner.
+  const { switchNetwork } = useSwitchNetwork();
+
   const { disconnect } = useDisconnect();
 
   if (!ready) {
@@ -137,6 +141,7 @@ export default function Home() {
                 <EnsName />
                 <EnsAddress />
                 <EnsAvatar />
+                <EnsResolver />
                 <SwitchNetwork />
                 <BlockNumber />
 
