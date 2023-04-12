@@ -6,7 +6,7 @@ import Button from "components/Button";
 const SendTransaction = () => {
   const { config } = usePrepareSendTransaction({
     request: {
-      to: "nichochar.eth",
+      to: "privyio.eth",
       value: BigNumber.from("10000000000000000"),
     },
   });
@@ -14,14 +14,14 @@ const SendTransaction = () => {
     useSendTransaction(config);
 
   return (
-    <Wrapper title="useEnsResolver">
-      <div className="px-2 py-1 text-white bg-red-400 rounded">
+    <Wrapper title="useSendTransaction">
+      <div className="px-2 py-1 text-sm text-white bg-red-400 rounded">
         We recommend doing this on goerli.
       </div>
       <Button
         disabled={!sendTransaction}
         onClick_={() => sendTransaction?.()}
-        cta="Send to nichochar.eth"
+        cta="Send to privyio.eth"
       />
       {isLoading && <div>Check wallet</div>}
       {isSuccess && <div>Transaction: {JSON.stringify(data)}</div>}

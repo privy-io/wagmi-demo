@@ -13,6 +13,7 @@ import SignMessage from "components/SignMessage";
 import SwitchNetwork from "components/SwitchNetwork";
 import Balance from "components/Balance";
 import BlockNumber from "components/BlockNumber";
+import SendTransaction from "components/SendTransaction";
 import { useAccount, useDisconnect, useSwitchNetwork } from "wagmi";
 
 const MonoLabel = ({ label }: { label: string }) => {
@@ -144,6 +145,7 @@ export default function Home() {
                 <EnsResolver />
                 <SwitchNetwork />
                 <BlockNumber />
+                <SendTransaction />
 
                 <h2 className="mt-6 text-2xl">useDisconnect</h2>
                 <Button onClick_={disconnect} cta="Disconnect from WAGMI" />
