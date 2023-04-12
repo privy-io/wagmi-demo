@@ -1,5 +1,6 @@
 import { useEnsResolver } from "wagmi";
 import Wrapper from "components/Wrapper";
+import SmallTextArea from "components/SmallTextArea";
 
 const EnsResolver = () => {
   const { data, isError, isLoading } = useEnsResolver({
@@ -14,8 +15,8 @@ const EnsResolver = () => {
     );
   return (
     <Wrapper title="useEnsResolver">
-      Resolver for vitalike.eth:
-      {JSON.stringify(data)}
+      ENS resolver for vitalik.eth:
+      <SmallTextArea content={JSON.stringify(data, null, 2)} />
     </Wrapper>
   );
 };
