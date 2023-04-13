@@ -149,7 +149,7 @@ const ContractWrite = () => {
           Transaction hash: <MonoLabel label={shorten(data.hash)} />
         </p>
       )}
-      {isError && <p>Error feeding Wagmigotchi.</p>}
+      {isError && <p>Error sending transaction.</p>}
       <Button
         disabled={isLoading}
         onClick_={() => write?.()}

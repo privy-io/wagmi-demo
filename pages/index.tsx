@@ -16,8 +16,11 @@ import BlockNumber from "components/BlockNumber";
 import SendTransaction from "components/SendTransaction";
 import { useAccount, useDisconnect, useSwitchNetwork } from "wagmi";
 import ContractRead from "components/ContractRead";
+import ContractEvent from "components/ContractEvent";
 import ContractReads from "components/ContractReads";
 import ContractInfiniteReads from "components/ContractInfiniteReads";
+import ContractWrite from "components/ContractWrite";
+import Contract from "components/Contract";
 
 const MonoLabel = ({ label }: { label: string }) => {
   return (
@@ -153,6 +156,9 @@ export default function Home() {
                 <ContractRead />
                 <ContractReads />
                 <ContractInfiniteReads />
+                <ContractWrite />
+                <ContractEvent />
+                <Contract />
 
                 <h2 className="mt-6 text-2xl">useDisconnect</h2>
                 <Button onClick_={disconnect} cta="Disconnect from WAGMI" />
