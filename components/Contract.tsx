@@ -42,7 +42,7 @@ const Contract = () => {
     signerOrProvider: provider,
   });
 
-  contract?.on("NewOwner", (node, label, owner) => {
+  contract?.once("NewOwner", (node, label, owner) => {
     setNode(node);
     setLabel(label);
     setOwner(owner);
@@ -51,7 +51,7 @@ const Contract = () => {
   return (
     <Wrapper title="useContract">
       <p>
-        Latest event:{" "}
+        First event:{" "}
         {node && label && owner ? (
           <MonoLabel
             label={`NewOwner(${shorten(node)}, ${shorten(label)}, ${shorten(

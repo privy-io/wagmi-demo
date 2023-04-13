@@ -69,12 +69,13 @@ const ContractEvent = () => {
       setLabel(label);
       setOwner(owner);
     },
+    once: true,
   });
 
   return (
     <Wrapper title="useContractEvent">
       <p>
-        Latest event:{" "}
+        First event:{" "}
         {node && label && owner ? (
           <MonoLabel
             label={`NewOwner(${shorten(node)}, ${shorten(label)}, ${shorten(
