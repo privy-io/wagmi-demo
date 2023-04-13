@@ -73,7 +73,6 @@ const ContractInfiniteReads = () => {
       </Wrapper>
     );
   } else {
-    console.log(data);
     return (
       <Wrapper title="useContractInfiniteReads">
         <p>
