@@ -3,14 +3,31 @@ import type { AppProps } from "next/app";
 import { PrivyProvider } from "@privy-io/react-auth";
 import { PrivyWagmiConnector } from "@privy-io/wagmi-connector";
 import { goerli, mainnet, configureChains } from "wagmi";
-import { alchemyProvider } from "wagmi/providers/alchemy";
-import { infuraProvider } from "wagmi/providers/infura";
+import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
 const configureChainsConfig = configureChains(
   [mainnet, goerli],
   [
-    alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY as string }),
-    infuraProvider({ apiKey: process.env.NEXT_PUBLIC_INFURA_API_KEY as string }),
+    jsonRpcProvider({
+      rpc: (chain: any) => {
+        switch (chain.id) {
+          case 1:
+            return {
+              http: `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
+              webSocket: `wss://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
+            };
+          case 5:
+            return {
+              http: `https://eth-goerli.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
+              webSocket: `wss://eth-goerli.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
+            };
+          default:
+            throw new Error(
+              "Unsupported network. Please switch to Goerli or Mainnet."
+            );
+        }
+      },
+    }),
   ]
 );
 
