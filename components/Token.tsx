@@ -35,7 +35,7 @@ const Token = () => {
     address: contractAddress,
   });
 
-  if (isError) {
+  if (isError || !data) {
     return (
       <Wrapper title="useToken">
         <p>Error reading from contract.</p>
@@ -51,25 +51,16 @@ const Token = () => {
     return (
       <Wrapper title="useToken">
         <p>
-          {!data ? (
-            <p>Error reading from contract.</p>
-          ) : (
-            <div>
-              <p>
-                Name: <MonoLabel label={data?.name} />
-              </p>
-              <p>
-                Symbol: <MonoLabel label={data?.symbol} />
-              </p>
-              <p>
-                Address: <MonoLabel label={shorten(data?.address)} />
-              </p>
-              <p>
-                Total Supply:{" "}
-                <MonoLabel label={data?.totalSupply.value.toString()} />
-              </p>
-            </div>
-          )}
+          Name: <MonoLabel label={data?.name} />
+        </p>
+        <p>
+          Symbol: <MonoLabel label={data?.symbol} />
+        </p>
+        <p>
+          Address: <MonoLabel label={shorten(data?.address)} />
+        </p>
+        <p>
+          Total Supply: <MonoLabel label={data?.totalSupply.value.toString()} />
         </p>
       </Wrapper>
     );
