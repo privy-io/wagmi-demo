@@ -37,13 +37,13 @@ const WaitForTransaction = () => {
   if (waiting || isLoading) {
     return (
       <Wrapper title="useWaitForTransaction">
-        <p>Waiting for a pending transaction...</p>
+        <p>Waiting for transaction to settle...</p>
       </Wrapper>
     );
   } else if (isError) {
     return (
       <Wrapper title="useWaitForTransaction">
-        <p>Error waiting for pending transaction...</p>
+        <p>Error waiting for transaction to settle...</p>
       </Wrapper>
     );
   } else {
