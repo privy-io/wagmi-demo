@@ -1,13 +1,15 @@
 import Button from "components/Button";
 import { shorten } from "lib/utils";
-import { useSignTypedData } from "wagmi";
+import { useSignTypedData, useNetwork } from "wagmi";
 
 const SignTypedData = () => {
+  const { chain } = useNetwork();
+
   // All properties on a domain are optional
   const domain = {
     name: "Ether Mail",
     version: "1",
-    chainId: 1,
+    chainId: chain?.id,
     verifyingContract: "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
   } as const;
 
