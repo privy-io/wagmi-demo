@@ -26,6 +26,7 @@ import Transaction from "components/Transaction";
 import WatchPendingTransactions from "components/WatchPendingTransactions";
 import WaitForTransaction from "components/WaitForTransaction";
 import Signer from "components/Signer";
+import FeeData from "components/FeeData";
 
 const MonoLabel = ({ label }: { label: string }) => {
   return (
@@ -166,6 +167,7 @@ export default function Home() {
                 <ContractEvent />
                 <Contract />
 
+                <FeeData />
                 <Token />
                 <Transaction />
                 <WatchPendingTransactions />
