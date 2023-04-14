@@ -25,6 +25,7 @@ import Token from "components/Token";
 import Transaction from "components/Transaction";
 import WatchPendingTransactions from "components/WatchPendingTransactions";
 import WaitForTransaction from "components/WaitForTransaction";
+import Signer from "components/Signer";
 
 const MonoLabel = ({ label }: { label: string }) => {
   return (
@@ -147,6 +148,7 @@ export default function Home() {
                 </p>
 
                 <Balance />
+                <Signer />
                 <SignMessage />
                 <SignTypedData />
                 <EnsName />
