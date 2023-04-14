@@ -28,7 +28,6 @@ import WaitForTransaction from "components/WaitForTransaction";
 import Signer from "components/Signer";
 import FeeData from "components/FeeData";
 import Provider from "components/Provider";
-import WebSocketProvider from "components/WebSocketProvider";
 
 const MonoLabel = ({ label }: { label: string }) => {
   return (
@@ -155,7 +154,6 @@ export default function Home() {
                 <SignMessage />
                 <SignTypedData />
                 <Provider />
-                <WebSocketProvider />
                 <EnsName />
                 <EnsAddress />
                 <EnsAvatar />
