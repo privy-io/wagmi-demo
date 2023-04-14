@@ -57,7 +57,9 @@ const Transaction = () => {
             <p>Error reading transaction.</p>
           ) : (
             <div>
-              Transaction response for {shorten(data.hash)}:
+              <p className="mb-2">
+                Transaction response for {shorten(data.hash)}:
+              </p>
               <SmallTextArea content={JSON.stringify(data, null, 2)} />
             </div>
           )}
