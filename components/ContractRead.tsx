@@ -4,6 +4,7 @@ import { useNetwork } from "wagmi";
 import MonoLabel from "./MonoLabel";
 import { shorten } from "lib/utils";
 import { BigNumber } from "ethers";
+import { erc721ABI } from "wagmi";
 
 const ContractRead = () => {
   const { chain } = useNetwork();
@@ -35,17 +36,7 @@ const ContractRead = () => {
   const { data, isError, isLoading } = useContractRead({
     // @ts-ignore
     address: contractAddress,
-    abi: [
-      {
-        constant: true,
-        inputs: [{ name: "tokenId", type: "uint256" }],
-        name: "ownerOf",
-        outputs: [{ name: "", type: "address" }],
-        payable: false,
-        stateMutability: "view",
-        type: "function",
-      },
-    ],
+    abi: erc721ABI,
     functionName: "ownerOf",
     args: [BigNumber.from(tokenId)],
   });
