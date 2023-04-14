@@ -23,6 +23,8 @@ import ContractWrite from "components/ContractWrite";
 import Contract from "components/Contract";
 import Token from "components/Token";
 import Transaction from "components/Transaction";
+import WatchPendingTransactions from "components/WatchPendingTransactions";
+import WaitForTransaction from "components/WaitForTransaction";
 
 const MonoLabel = ({ label }: { label: string }) => {
   return (
@@ -164,6 +166,8 @@ export default function Home() {
 
                 <Token />
                 <Transaction />
+                <WatchPendingTransactions />
+                <WaitForTransaction />
 
                 <h2 className="mt-6 text-2xl">useDisconnect</h2>
                 <Button onClick_={disconnect} cta="Disconnect from WAGMI" />
