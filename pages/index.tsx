@@ -21,6 +21,7 @@ import ContractReads from "components/ContractReads";
 import ContractInfiniteReads from "components/ContractInfiniteReads";
 import ContractWrite from "components/ContractWrite";
 import Contract from "components/Contract";
+import Token from "components/Token";
 
 const MonoLabel = ({ label }: { label: string }) => {
   return (
@@ -159,6 +160,8 @@ export default function Home() {
                 <ContractWrite />
                 <ContractEvent />
                 <Contract />
+
+                <Token />
 
                 <h2 className="mt-6 text-2xl">useDisconnect</h2>
                 <Button onClick_={disconnect} cta="Disconnect from WAGMI" />
