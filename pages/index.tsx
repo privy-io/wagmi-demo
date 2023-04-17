@@ -77,17 +77,23 @@ export default function Home() {
           height={100}
         />
         <p className="my-4 text-center">
-          This demo showcases how you can setup WAGMI and Privy to work
-          together. Login below with Privy to try it out!
+          This demo showcases how you can integrate <a href="https://wagmi.sh/" className="underline font-medium">wagmi</a> alongside <a href="https://www.privy.io/" className="underline font-medium">Privy</a> in your React app. Login below to try it out!
           <br />
-          For more information, see{" "}
+          For more information, check out{" "}
           <a
             href="https://docs.privy.io/guide/guides/wagmi"
-            className="font-bold underline"
+            className="underline font-medium"
           >
             our integration guide
           </a>
-          .
+          {" "}or the{" "}
+          <a
+            href="https://github.com/privy-io/wagmi-demo"
+            className="underline font-medium"
+          >
+            source code
+          </a>
+          {" "} for this app.
         </p>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div className="flex flex-col items-start p-3 border border-black rounded gap-2 border-1 bg-slate-100">
