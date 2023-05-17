@@ -37,14 +37,9 @@ const MonoLabel = ({ label }: { label: string }) => {
 
 export default function Home() {
   // Privy hooks
-  const { login, logout, linkWallet, unlinkWallet, setActiveWallet } =
+  const { login, logout, linkWallet, unlinkWallet, setActiveWallet, connectWallet, wallets } =
     usePrivy();
   const { ready, authenticated, user } = usePrivy();
-
-  const linkedAccounts = user?.linkedAccounts || [];
-  const wallets = linkedAccounts.filter(
-    (a) => a.type === "wallet"
-  ) as WalletWithMetadata[];
 
   // WAGMI hooks
   const { address, isConnected, isConnecting, isDisconnected } = useAccount();
@@ -98,46 +93,49 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div className="flex flex-col items-start p-3 border border-black rounded gap-2 border-1 bg-slate-100">
             <h1 className="text-4xl font-bold">Privy</h1>
-            {ready && !authenticated && (
-              <>
-                <p>You are not authenticated with Privy</p>
-                <Button onClick_={login} cta="Login with Privy" />
-              </>
-            )}
-
-            {ready && authenticated && (
-              <>
-                <p>
-                  You are logged in with privy.
-                  <br />
-                  Active wallet is{" "}
-                  <MonoLabel label={user?.wallet?.address || ""} />
-                </p>
-                {wallets.map((wallet) => {
+            {wallets.filter((wallet) => wallet.connected).map((wallet) => {
                   return (
                     <div
                       key={wallet.address}
-                      className="flex flex-row flex-wrap items-center justify-between min-w-full p-4 gap-2 bg-slate-50"
+                      className={"flex flex-row flex-wrap items-center justify-between min-w-full p-4 gap-2 bg-slate-50 " + (wallet.address === wallets[0].address ? "border border-black" : "")}
                     >
-                      <div>
+                      <div className="grid rows-3 gap-y-2">
                         <MonoLabel label={shorten(wallet.address)} />
+                        <MonoLabel label={wallet.connectorType} />
+                        <MonoLabel label={wallet.walletClientType} />
                       </div>
                       <Button
                         cta="Make active"
                         onClick_={() => setActiveWallet(wallet.address)}
-                        disabled={wallet.address === user?.wallet?.address}
+                        disabled={wallet.address === wallets[0].address}
                       />
                       <Button
-                        cta="Unlink"
-                        onClick_={() => unlinkWallet(wallet.address)}
+                        cta={wallet.linked ? "Unlink" : "Link"}
+                        onClick_={() => wallet.linked ? wallet.unlink() : wallet.link()}
+                        disabled={!authenticated}
                       />
                     </div>
                   );
                 })}
-                <Button onClick_={linkWallet} cta="Link another wallet" />
-
-                <br />
-                <Button onClick_={logout} cta="Logout from Privy" />
+            {ready && !authenticated && (
+              <>
+                <p>You are not authenticated with Privy</p>
+                <div className="grid grid-cols-2 gap-x-4 justify-between">
+                  <Button onClick_={login} cta="Login with Privy" />
+                  <Button onClick_={connectWallet} cta="Connect a Wallet" />
+                </div>
+              </>
+            )}
+            {ready && authenticated && (
+              <>
+                <p>
+                  You are logged in with privy.
+                </p>
+                <div className="grid grid-cols-3 gap-x-4 justify-between">
+                  <Button onClick_={linkWallet} cta="Link another wallet" />
+                  <Button onClick_={logout} cta="Logout from Privy" />
+                  <Button onClick_={connectWallet} cta="Connect a Wallet" />
+                </div>
               </>
             )}
           </div>
@@ -158,7 +156,7 @@ export default function Home() {
                 <Balance />
                 <Signer />
                 <SignMessage />
-                <SignTypedData />
+                {/* <SignTypedData />
                 <Provider />
                 <EnsName />
                 <EnsAddress />
@@ -177,7 +175,7 @@ export default function Home() {
                 <Token />
                 <Transaction />
                 <WatchPendingTransactions />
-                <WaitForTransaction />
+                <WaitForTransaction /> */}
 
                 <h2 className="mt-6 text-2xl">useDisconnect</h2>
                 <Button onClick_={disconnect} cta="Disconnect from WAGMI" />
