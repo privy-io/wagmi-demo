@@ -106,7 +106,24 @@ const wagmigotchiABI = [
 ];
 
 const ContractWrite = () => {
-  const { chain } = useNetwork();
+  const {chain} = useNetwork();
+
+  let contractAddress: AddressString | undefined;
+  switch (chain?.id) {
+    case 1:
+    case 5:
+      contractAddress = '0xeCB504D39723b0be0e3a9Aa33D646642D1051EE1'; // WAGMIGOTCHI on Mainnet and Goerli
+      break;
+  }
+
+  const {config} = usePrepareContractWrite({
+    address: contractAddress,
+    abi: wagmigotchiABI,
+    functionName: 'feed',
+    enabled: !!contractAddress,
+  });
+
+  const {data, isLoading, isError, write} = useContractWrite(config);
 
   if (!chain) {
     return (
@@ -116,28 +133,13 @@ const ContractWrite = () => {
     );
   }
 
-  let contractAddress: string;
-  switch (chain.id) {
-    case 1:
-    case 5:
-      contractAddress = '0xeCB504D39723b0be0e3a9Aa33D646642D1051EE1'; // WAGMIGOTCHI on Mainnet and Goerli
-      break;
-    default:
-      return (
-        <Wrapper title="useContractWrite">
-          <p>Unsupported network. Please switch to Goerli or Mainnet.</p>
-        </Wrapper>
-      );
+  if (!contractAddress) {
+    return (
+      <Wrapper title="useContractWrite">
+        <p>Unsupported network. Please switch to Goerli or Mainnet.</p>
+      </Wrapper>
+    );
   }
-
-  const { config } = usePrepareContractWrite({
-    // @ts-ignore
-    address: contractAddress,
-    abi: wagmigotchiABI,
-    functionName: 'feed',
-  });
-
-  const { data, isLoading, isError, write } = useContractWrite(config);
 
   return (
     <Wrapper title="useContractWrite">

@@ -1,5 +1,5 @@
-import { useState } from "react";
 import Wrapper from 'components/Wrapper';
+import {useEffect, useState} from 'react';
 import {useSigner} from 'wagmi';
 
 const Signer = () => {
@@ -13,18 +13,22 @@ const Signer = () => {
   const ready =
     balance && chainId && gasPrice && transactionCount && signer && !isLoading && !isError;
 
-  signer?.getBalance().then((balance) => {
-    setBalance(balance.toString());
-  });
-  signer?.getChainId().then((chainId) => {
-    setChainId(chainId.toString());
-  });
-  signer?.getGasPrice().then((gasPrice) => {
-    setGasPrice(gasPrice.toString());
-  });
-  signer?.getTransactionCount().then((transactionCount) => {
-    setTransactionCount(transactionCount.toString());
-  });
+  useEffect(() => {
+    if (!signer) return;
+
+    signer?.getBalance().then((balance) => {
+      setBalance(balance.toString());
+    });
+    signer?.getChainId().then((chainId) => {
+      setChainId(chainId.toString());
+    });
+    signer?.getGasPrice().then((gasPrice) => {
+      setGasPrice(gasPrice.toString());
+    });
+    signer?.getTransactionCount().then((transactionCount) => {
+      setTransactionCount(transactionCount.toString());
+    });
+  }, [signer]);
 
   if (isError) {
     return (

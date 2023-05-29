@@ -5,6 +5,26 @@ import {erc721ABI, useContractRead, useNetwork} from 'wagmi';
 
 import MonoLabel from './MonoLabel';
 
+const ContractRead = () => {
+  const {chain} = useNetwork();
+
+  let contractAddress: AddressString | undefined;
+  switch (chain?.id) {
+    case 1:
+    case 5:
+      contractAddress = '0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85'; // ENS Mainnet and Goerli Base Registrar
+      break;
+  }
+
+  const tokenId = '51642261290124123987113999051891697215550265269061454558443363901899214720732'; // larry.eth
+  const {data, isError, isLoading} = useContractRead({
+    address: contractAddress,
+    abi: erc721ABI,
+    functionName: 'ownerOf',
+    args: [BigNumber.from(tokenId)],
+    enabled: !!contractAddress,
+  });
+
   if (!chain) {
     return (
       <Wrapper title="useContractRead">
@@ -12,32 +32,14 @@ import MonoLabel from './MonoLabel';
       </Wrapper>
     );
   }
-const ContractRead = () => {
-  const {chain} = useNetwork();
 
-  let contractAddress: string;
-  switch (chain.id) {
-    case 1:
-    case 5:
-      contractAddress = '0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85'; // ENS Mainnet and Goerli Base Registrar
-      break;
-    default:
-      return (
-        <Wrapper title="useContractReads">
-          <p>Unsupported network. Please switch to Goerli or Mainnet.</p>
-        </Wrapper>
-      );
+  if (!contractAddress) {
+    return (
+      <Wrapper title="useContractReads">
+        <p>Unsupported network. Please switch to Goerli or Mainnet.</p>
+      </Wrapper>
+    );
   }
-
-  const { data, isError, isLoading } = useContractRead({
-    // @ts-ignore
-  const tokenId = '51642261290124123987113999051891697215550265269061454558443363901899214720732'; // larry.eth
-    address: contractAddress,
-    abi: erc721ABI,
-    functionName: 'ownerOf',
-    args: [BigNumber.from(tokenId)],
-    enabled: !!contractAddress,
-  });
 
   if (isError) {
     return (

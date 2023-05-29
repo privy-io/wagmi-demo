@@ -11,31 +11,8 @@ const ContractEvent = () => {
   const [label, setLabel] = useState<string | null>(null);
   const [owner, setOwner] = useState<string | null>(null);
 
-  if (!chain) {
-    return (
-      <Wrapper title="useContractEvent">
-        <p>Loading...</p>
-      </Wrapper>
-    );
-  }
-
-  let contractAddress: string;
-  switch (chain.id) {
-    case 1:
-    case 5:
-      contractAddress = "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e"; // ENS Mainnet and Goerli Registry
-      break;
-    default:
-      return (
-        <Wrapper title="useContractEvent">
-          <p>Unsupported network. Please switch to Goerli or Mainnet.</p>
-        </Wrapper>
-      );
-  }
-
   useContractEvent({
-    // @ts-ignore
-    address: contractAddress,
+    address: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e', // ENS Mainnet and Goerli Registry
     abi: [
       {
         anonymous: false,
@@ -71,6 +48,22 @@ const ContractEvent = () => {
     },
     once: true,
   });
+
+  if (!chain) {
+    return (
+      <Wrapper title="useContractEvent">
+        <p>Loading...</p>
+      </Wrapper>
+    );
+  }
+
+  if (chain.id !== 1 && chain.id !== 5) {
+    return (
+      <Wrapper title="useContractEvent">
+        <p>Unsupported network. Please switch to Goerli or Mainnet.</p>
+      </Wrapper>
+    );
+  }
 
   return (
     <Wrapper title="useContractEvent">

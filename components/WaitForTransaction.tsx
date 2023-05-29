@@ -1,4 +1,5 @@
 import Wrapper from 'components/Wrapper';
+import type {Transaction} from 'ethers';
 import type {AddressString} from 'lib/utils';
 import {useState} from 'react';
 import {useNetwork, useWaitForTransaction, useWatchPendingTransactions} from 'wagmi';
@@ -8,15 +9,7 @@ import SmallTextArea from './SmallTextArea';
 const WaitForTransaction = () => {
   const {chain} = useNetwork();
   const [waiting, setWaiting] = useState(true);
-  const [transaction, setTransaction] = useState<any>(null);
-
-  if (!chain) {
-    return (
-      <Wrapper title="useWaitForTransaction">
-        <p>Loading...</p>
-      </Wrapper>
-    );
-  }
+  const [transaction, setTransaction] = useState<Transaction>();
 
   useWatchPendingTransactions({
     chainId: chain?.id,
@@ -27,10 +20,18 @@ const WaitForTransaction = () => {
     enabled: waiting,
   });
 
-  const { data, isError, isLoading } = useWaitForTransaction({
-    hash: transaction?.hash,
-    enabled: !waiting,
+  const {data, isError, isLoading} = useWaitForTransaction({
+    hash: transaction?.hash as AddressString | undefined,
+    enabled: !waiting && !!transaction?.hash,
   });
+
+  if (!chain) {
+    return (
+      <Wrapper title="useWaitForTransaction">
+        <p>Loading...</p>
+      </Wrapper>
+    );
+  }
 
   if (waiting || isLoading) {
     return (
