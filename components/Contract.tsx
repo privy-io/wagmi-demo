@@ -1,8 +1,9 @@
-import { useContract, useProvider } from "wagmi";
-import Wrapper from "components/Wrapper";
-import { useState } from "react";
-import { shorten } from "lib/utils";
-import MonoLabel from "./MonoLabel";
+import Wrapper from 'components/Wrapper';
+import {shorten} from 'lib/utils';
+import {useState} from 'react';
+import {useContract, useProvider} from 'wagmi';
+
+import MonoLabel from './MonoLabel';
 
 const Contract = () => {
   const [node, setNode] = useState<string | null>(null);
@@ -11,38 +12,38 @@ const Contract = () => {
 
   const provider = useProvider();
   const contract = useContract({
-    address: "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e", // ENS Mainnet and Goerli Registry
+    address: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e', // ENS Mainnet and Goerli Registry
     abi: [
       {
         anonymous: false,
         inputs: [
           {
             indexed: true,
-            internalType: "bytes32",
-            name: "node",
-            type: "bytes32",
+            internalType: 'bytes32',
+            name: 'node',
+            type: 'bytes32',
           },
           {
             indexed: true,
-            internalType: "bytes32",
-            name: "label",
-            type: "bytes32",
+            internalType: 'bytes32',
+            name: 'label',
+            type: 'bytes32',
           },
           {
             indexed: false,
-            internalType: "address",
-            name: "owner",
-            type: "address",
+            internalType: 'address',
+            name: 'owner',
+            type: 'address',
           },
         ],
-        name: "NewOwner",
-        type: "event",
+        name: 'NewOwner',
+        type: 'event',
       },
     ],
     signerOrProvider: provider,
   });
 
-  contract?.once("NewOwner", (node, label, owner) => {
+  contract?.once('NewOwner', (node, label, owner) => {
     setNode(node);
     setLabel(label);
     setOwner(owner);
@@ -50,18 +51,14 @@ const Contract = () => {
 
   return (
     <Wrapper title="useContract">
-      <p>
-        First event:{" "}
+      <div>
+        First event:{' '}
         {node && label && owner ? (
-          <MonoLabel
-            label={`NewOwner(${shorten(node)}, ${shorten(label)}, ${shorten(
-              owner
-            )})`}
-          />
+          <MonoLabel label={`NewOwner(${shorten(node)}, ${shorten(label)}, ${shorten(owner)})`} />
         ) : (
           <MonoLabel label="Listening..." />
         )}
-      </p>
+      </div>
     </Wrapper>
   );
 };

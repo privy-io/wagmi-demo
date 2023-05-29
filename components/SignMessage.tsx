@@ -1,14 +1,15 @@
-import { useSignMessage, useAccount } from "wagmi";
-import Button from "components/Button";
-import { shorten } from "lib/utils";
-import { usePrivy } from "@privy-io/react-auth";
+import Button from 'components/Button';
+import {shorten} from 'lib/utils';
+import {useAccount, useSignMessage} from 'wagmi';
+
+import {usePrivy} from '@privy-io/react-auth';
 
 const SignMessage = () => {
-  const { user } = usePrivy();
-  const { address } = useAccount();
-  const { isLoading: signLoading, signMessage } = useSignMessage({
+  const {user} = usePrivy();
+  const {address} = useAccount();
+  const {isLoading: signLoading, signMessage} = useSignMessage({
     onSuccess() {
-      console.log("Sign Message Success");
+      console.log('Sign Message Success');
     },
   });
   return (
@@ -19,7 +20,7 @@ const SignMessage = () => {
           onClick_={() => {
             signMessage({
               message: `Signing with WAGMI\nWAGMI address: ${shorten(
-                address
+                address,
               )}\nPrivy address: ${shorten(user?.wallet?.address)}`,
             });
           }}

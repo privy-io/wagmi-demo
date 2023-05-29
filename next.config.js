@@ -1,17 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  webpack: (
-    config,
-    { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }
-  ) => {
+  webpack: (config) => {
     config.snapshot = {
       ...(config.snapshot ?? {}),
-      // Add all node_modules but @next module to managedPaths
-      // Allows for hot refresh of changes to @next module
-      //
+      // Add all node_modules to managedPaths, EXCEPT wagmi-connector, next/swc (which show
+      // warnings if added). Allows for hot refresh of changes
       managedPaths: [
-        /^(.+?[\\/]node_modules[\\/](?!(@privy-io[\\/]wagmi-connector))(@.+?[\\/])?.+?)[\\/]/,
+        /^(.+?[\\/]node_modules[\\/](?!(@privy-io[\\/]wagmi-connector|@next|@swc))(@.+?[\\/])?.+?)[\\/]/,
       ],
     };
     return config;

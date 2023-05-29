@@ -1,9 +1,10 @@
-import Wrapper from "components/Wrapper";
-import { useFeeData } from "wagmi";
-import MonoLabel from "./MonoLabel";
+import Wrapper from 'components/Wrapper';
+import {useFeeData} from 'wagmi';
+
+import MonoLabel from './MonoLabel';
 
 const FeeData = () => {
-  const { data, isError, isLoading } = useFeeData();
+  const {data, isError, isLoading} = useFeeData();
 
   if (isError) {
     return (
@@ -21,15 +22,13 @@ const FeeData = () => {
     return (
       <Wrapper title="useFeeData">
         <p>
-          Gas Price: <MonoLabel label={data?.formatted.gasPrice || ""} />
+          Gas Price: <MonoLabel label={data?.formatted.gasPrice || ''} />
         </p>
         <p>
-          Max Fee Per Gas:{" "}
-          <MonoLabel label={data?.formatted.maxFeePerGas || ""} />
+          Max Fee Per Gas: <MonoLabel label={data?.formatted.maxFeePerGas || ''} />
         </p>
         <p>
-          Max Priority Fee Per Gas:{" "}
-          <MonoLabel label={data?.formatted.maxPriorityFeePerGas || ""} />
+          Max Priority Fee Per Gas: <MonoLabel label={data?.formatted.maxPriorityFeePerGas || ''} />
         </p>
       </Wrapper>
     );

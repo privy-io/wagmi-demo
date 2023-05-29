@@ -1,7 +1,8 @@
-import Wrapper from "components/Wrapper";
-import { useWebSocketProvider } from "wagmi";
-import MonoLabel from "./MonoLabel";
-import { useState } from "react";
+import Wrapper from 'components/Wrapper';
+import {useState} from 'react';
+import {useWebSocketProvider} from 'wagmi';
+
+import MonoLabel from './MonoLabel';
 
 const WebSocketProvider = () => {
   const [ready, setReady] = useState(false);
@@ -15,7 +16,7 @@ const WebSocketProvider = () => {
     return (
       <Wrapper title="useWebSocketProvider">
         <p>
-          WebSocket Provider loaded: <MonoLabel label={"pending"} />
+          WebSocket Provider loaded: <MonoLabel label="pending" />
         </p>
       </Wrapper>
     );
@@ -23,7 +24,7 @@ const WebSocketProvider = () => {
     return (
       <Wrapper title="useWebSocketProvider">
         <p>
-          WebSocket Provider loaded: <MonoLabel label={"success"} />
+          WebSocket Provider loaded: <MonoLabel label="success" />
         </p>
       </Wrapper>
     );

@@ -1,16 +1,29 @@
-import Wrapper from "components/Wrapper";
-import {
-  useNetwork,
-  useWaitForTransaction,
-  useWatchPendingTransactions,
-} from "wagmi";
-import SmallTextArea from "./SmallTextArea";
-import { useState } from "react";
+import Wrapper from 'components/Wrapper';
+import type {Transaction} from 'ethers';
+import type {AddressString} from 'lib/utils';
+import {useState} from 'react';
+import {useNetwork, useWaitForTransaction, useWatchPendingTransactions} from 'wagmi';
+
+import SmallTextArea from './SmallTextArea';
 
 const WaitForTransaction = () => {
-  const { chain } = useNetwork();
+  const {chain} = useNetwork();
   const [waiting, setWaiting] = useState(true);
-  const [transaction, setTransaction] = useState<any>(null);
+  const [transaction, setTransaction] = useState<Transaction>();
+
+  useWatchPendingTransactions({
+    chainId: chain?.id,
+    listener: (transaction) => {
+      setTransaction(transaction);
+      setWaiting(false);
+    },
+    enabled: waiting,
+  });
+
+  const {data, isError, isLoading} = useWaitForTransaction({
+    hash: transaction?.hash as AddressString | undefined,
+    enabled: !waiting && !!transaction?.hash,
+  });
 
   if (!chain) {
     return (
@@ -19,20 +32,6 @@ const WaitForTransaction = () => {
       </Wrapper>
     );
   }
-
-  useWatchPendingTransactions({
-    chainId: chain.id,
-    listener: (transaction) => {
-      setTransaction(transaction);
-      setWaiting(false);
-    },
-    enabled: waiting,
-  });
-
-  const { data, isError, isLoading } = useWaitForTransaction({
-    hash: transaction?.hash,
-    enabled: !waiting,
-  });
 
   if (waiting || isLoading) {
     return (

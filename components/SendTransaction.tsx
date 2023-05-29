@@ -1,21 +1,20 @@
-import { useSendTransaction, usePrepareSendTransaction } from "wagmi";
-import { BigNumber } from "ethers";
-import Wrapper from "components/Wrapper";
-import Button from "components/Button";
+import Button from 'components/Button';
+import Wrapper from 'components/Wrapper';
+import {BigNumber} from 'ethers';
+import {usePrepareSendTransaction, useSendTransaction} from 'wagmi';
 
 const SendTransaction = () => {
-  const { config } = usePrepareSendTransaction({
+  const {config} = usePrepareSendTransaction({
     request: {
-      to: "privyio.eth",
-      value: BigNumber.from("10000000000000000"),
+      to: 'privyio.eth',
+      value: BigNumber.from('10000000000000000'),
     },
   });
-  const { data, isLoading, isSuccess, sendTransaction } =
-    useSendTransaction(config);
+  const {data, isLoading, isSuccess, sendTransaction} = useSendTransaction(config);
 
   return (
     <Wrapper title="useSendTransaction">
-      <div className="px-2 py-1 text-sm text-white bg-red-400 rounded">
+      <div className="rounded bg-red-400 px-2 py-1 text-sm text-white">
         We recommend doing this on goerli.
       </div>
       <Button
