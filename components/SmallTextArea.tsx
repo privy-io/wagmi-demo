@@ -1,11 +1,10 @@
-const SmallTextArea = ({ content }: { content: string }) => {
+const SmallTextArea = ({content}: {content: string}) => {
   return (
     <textarea
-      className="min-w-full text-sm bg-white border-2 rounded border-slate-800 focus:border-slate-400 focus:outline-none shadow-sm p-2"
+      className="min-w-full rounded border-2 border-slate-800 bg-white p-2 text-sm shadow-sm focus:border-slate-400 focus:outline-none"
       rows={5}
-    >
-      {content}
-    </textarea>
+      defaultValue={content}
+    />
   );
 };
 

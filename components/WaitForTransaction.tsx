@@ -1,14 +1,12 @@
-import Wrapper from "components/Wrapper";
-import {
-  useNetwork,
-  useWaitForTransaction,
-  useWatchPendingTransactions,
-} from "wagmi";
-import SmallTextArea from "./SmallTextArea";
-import { useState } from "react";
+import Wrapper from 'components/Wrapper';
+import type {AddressString} from 'lib/utils';
+import {useState} from 'react';
+import {useNetwork, useWaitForTransaction, useWatchPendingTransactions} from 'wagmi';
+
+import SmallTextArea from './SmallTextArea';
 
 const WaitForTransaction = () => {
-  const { chain } = useNetwork();
+  const {chain} = useNetwork();
   const [waiting, setWaiting] = useState(true);
   const [transaction, setTransaction] = useState<any>(null);
 
@@ -21,7 +19,7 @@ const WaitForTransaction = () => {
   }
 
   useWatchPendingTransactions({
-    chainId: chain.id,
+    chainId: chain?.id,
     listener: (transaction) => {
       setTransaction(transaction);
       setWaiting(false);

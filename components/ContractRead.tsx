@@ -1,13 +1,9 @@
-import { useContractRead } from "wagmi";
-import Wrapper from "components/Wrapper";
-import { useNetwork } from "wagmi";
-import MonoLabel from "./MonoLabel";
-import { shorten } from "lib/utils";
-import { BigNumber } from "ethers";
-import { erc721ABI } from "wagmi";
+import Wrapper from 'components/Wrapper';
+import {BigNumber} from 'ethers';
+import {shorten, type AddressString} from 'lib/utils';
+import {erc721ABI, useContractRead, useNetwork} from 'wagmi';
 
-const ContractRead = () => {
-  const { chain } = useNetwork();
+import MonoLabel from './MonoLabel';
 
   if (!chain) {
     return (
@@ -16,12 +12,14 @@ const ContractRead = () => {
       </Wrapper>
     );
   }
+const ContractRead = () => {
+  const {chain} = useNetwork();
 
   let contractAddress: string;
   switch (chain.id) {
     case 1:
     case 5:
-      contractAddress = "0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85"; // ENS Mainnet and Goerli Base Registrar
+      contractAddress = '0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85'; // ENS Mainnet and Goerli Base Registrar
       break;
     default:
       return (
@@ -31,14 +29,14 @@ const ContractRead = () => {
       );
   }
 
-  const tokenId =
-    "51642261290124123987113999051891697215550265269061454558443363901899214720732"; // larry.eth
   const { data, isError, isLoading } = useContractRead({
     // @ts-ignore
+  const tokenId = '51642261290124123987113999051891697215550265269061454558443363901899214720732'; // larry.eth
     address: contractAddress,
     abi: erc721ABI,
-    functionName: "ownerOf",
+    functionName: 'ownerOf',
     args: [BigNumber.from(tokenId)],
+    enabled: !!contractAddress,
   });
 
   if (isError) {
@@ -57,7 +55,7 @@ const ContractRead = () => {
     return (
       <Wrapper title="useContractRead">
         <p>
-          Owner of ENS Token ID {shorten(tokenId)}:{" "}
+          Owner of ENS Token ID {shorten(tokenId)}:{' '}
           {!data ? (
             <MonoLabel label="Error. Token may not exist on this network." />
           ) : (

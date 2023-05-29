@@ -1,10 +1,11 @@
-import Wrapper from "components/Wrapper";
-import { useNetwork, useTransaction } from "wagmi";
-import { shorten } from "lib/utils";
-import SmallTextArea from "./SmallTextArea";
+import Wrapper from 'components/Wrapper';
+import {shorten, type AddressString} from 'lib/utils';
+import {useNetwork, useTransaction} from 'wagmi';
+
+import SmallTextArea from './SmallTextArea';
 
 const Transaction = () => {
-  const { chain } = useNetwork();
+  const {chain} = useNetwork();
 
   if (!chain) {
     return (
@@ -52,18 +53,16 @@ const Transaction = () => {
   } else {
     return (
       <Wrapper title="useTransaction">
-        <p>
+        <div>
           {!data ? (
             <p>Error reading transaction.</p>
           ) : (
             <div>
-              <p className="mb-2">
-                Transaction response for {shorten(data.hash)}:
-              </p>
+              <p className="mb-2">Transaction response for {shorten(data.hash)}:</p>
               <SmallTextArea content={JSON.stringify(data, null, 2)} />
             </div>
           )}
-        </p>
+        </div>
       </Wrapper>
     );
   }

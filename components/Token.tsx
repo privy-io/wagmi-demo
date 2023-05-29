@@ -1,10 +1,11 @@
-import Wrapper from "components/Wrapper";
-import { useNetwork, useToken } from "wagmi";
-import MonoLabel from "./MonoLabel";
-import { shorten } from "lib/utils";
+import Wrapper from 'components/Wrapper';
+import {shorten, type AddressString} from 'lib/utils';
+import {useNetwork, useToken} from 'wagmi';
+
+import MonoLabel from './MonoLabel';
 
 const Token = () => {
-  const { chain } = useNetwork();
+  const {chain} = useNetwork();
 
   if (!chain) {
     return (

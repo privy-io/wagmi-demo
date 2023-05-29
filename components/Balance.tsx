@@ -1,8 +1,8 @@
-import { useAccount, useBalance } from "wagmi";
+import {useAccount, useBalance} from 'wagmi';
 
 const Balance = () => {
-  const { address } = useAccount();
-  const { data, isError, isLoading } = useBalance({ address });
+  const {address} = useAccount();
+  const {data, isError, isLoading} = useBalance({address});
 
   if (isLoading) return <div>Fetching balance…</div>;
   if (isError) return <div>Error fetching balance</div>;

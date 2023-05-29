@@ -1,12 +1,12 @@
-import { useContractEvent, useContractRead } from "wagmi";
-import Wrapper from "components/Wrapper";
-import { useNetwork } from "wagmi";
-import MonoLabel from "./MonoLabel";
-import { shorten } from "lib/utils";
-import { useState } from "react";
+import Wrapper from 'components/Wrapper';
+import {shorten} from 'lib/utils';
+import {useState} from 'react';
+import {useContractEvent, useNetwork} from 'wagmi';
+
+import MonoLabel from './MonoLabel';
 
 const ContractEvent = () => {
-  const { chain } = useNetwork();
+  const {chain} = useNetwork();
   const [node, setNode] = useState<string | null>(null);
   const [label, setLabel] = useState<string | null>(null);
   const [owner, setOwner] = useState<string | null>(null);
@@ -42,28 +42,28 @@ const ContractEvent = () => {
         inputs: [
           {
             indexed: true,
-            internalType: "bytes32",
-            name: "node",
-            type: "bytes32",
+            internalType: 'bytes32',
+            name: 'node',
+            type: 'bytes32',
           },
           {
             indexed: true,
-            internalType: "bytes32",
-            name: "label",
-            type: "bytes32",
+            internalType: 'bytes32',
+            name: 'label',
+            type: 'bytes32',
           },
           {
             indexed: false,
-            internalType: "address",
-            name: "owner",
-            type: "address",
+            internalType: 'address',
+            name: 'owner',
+            type: 'address',
           },
         ],
-        name: "NewOwner",
-        type: "event",
+        name: 'NewOwner',
+        type: 'event',
       },
     ],
-    eventName: "NewOwner",
+    eventName: 'NewOwner',
     listener(node, label, owner) {
       setNode(node);
       setLabel(label);
@@ -75,13 +75,9 @@ const ContractEvent = () => {
   return (
     <Wrapper title="useContractEvent">
       <p>
-        First event:{" "}
+        First event:{' '}
         {node && label && owner ? (
-          <MonoLabel
-            label={`NewOwner(${shorten(node)}, ${shorten(label)}, ${shorten(
-              owner
-            )})`}
-          />
+          <MonoLabel label={`NewOwner(${shorten(node)}, ${shorten(label)}, ${shorten(owner)})`} />
         ) : (
           <MonoLabel label="Listening..." />
         )}

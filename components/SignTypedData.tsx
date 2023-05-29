@@ -1,48 +1,47 @@
-import Button from "components/Button";
-import { shorten } from "lib/utils";
-import { useSignTypedData, useNetwork } from "wagmi";
+import Button from 'components/Button';
+import {shorten} from 'lib/utils';
+import {useNetwork, useSignTypedData} from 'wagmi';
 
 const SignTypedData = () => {
-  const { chain } = useNetwork();
+  const {chain} = useNetwork();
 
   // All properties on a domain are optional
   const domain = {
-    name: "Ether Mail",
-    version: "1",
+    name: 'Ether Mail',
+    version: '1',
     chainId: chain?.id,
-    verifyingContract: "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
+    verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
   } as const;
 
   // The named list of all type definitions
   const types = {
     Person: [
-      { name: "name", type: "string" },
-      { name: "wallet", type: "address" },
+      {name: 'name', type: 'string'},
+      {name: 'wallet', type: 'address'},
     ],
     Mail: [
-      { name: "from", type: "Person" },
-      { name: "to", type: "Person" },
-      { name: "contents", type: "string" },
+      {name: 'from', type: 'Person'},
+      {name: 'to', type: 'Person'},
+      {name: 'contents', type: 'string'},
     ],
   } as const;
 
   const value = {
     from: {
-      name: "Cow",
-      wallet: "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
+      name: 'Cow',
+      wallet: '0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826',
     },
     to: {
-      name: "Bob",
-      wallet: "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB",
+      name: 'Bob',
+      wallet: '0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB',
     },
-    contents: "Hello, Bob!",
+    contents: 'Hello, Bob!',
   } as const;
-  const { data, isError, isLoading, isSuccess, signTypedData } =
-    useSignTypedData({
-      domain,
-      types,
-      value,
-    });
+  const {data, isError, isLoading, isSuccess, signTypedData} = useSignTypedData({
+    domain,
+    types,
+    value,
+  });
 
   return (
     <>

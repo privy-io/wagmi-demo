@@ -1,10 +1,12 @@
-import Wrapper from "components/Wrapper";
-import { useNetwork, useWatchPendingTransactions } from "wagmi";
-import SmallTextArea from "./SmallTextArea";
-import { useState } from "react";
+import Wrapper from 'components/Wrapper';
+import type {Transaction} from 'ethers';
+import {useState} from 'react';
+import {useNetwork, useWatchPendingTransactions} from 'wagmi';
+
+import SmallTextArea from './SmallTextArea';
 
 const WatchPendingTransactions = () => {
-  const { chain } = useNetwork();
+  const {chain} = useNetwork();
   const [enabled, setEnabled] = useState(true);
   const [transaction, setTransaction] = useState<any>();
 

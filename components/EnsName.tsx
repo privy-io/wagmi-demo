@@ -1,9 +1,9 @@
-import MonoLabel from "components/MonoLabel";
-import { useEnsName, useAccount } from "wagmi";
+import MonoLabel from 'components/MonoLabel';
+import {useAccount, useEnsName} from 'wagmi';
 
 const EnsName = () => {
-  const { address } = useAccount();
-  const { data: ensName, isError, isLoading, status } = useEnsName({ address });
+  const {address} = useAccount();
+  const {data: ensName, isError, isLoading, status} = useEnsName({address});
 
   return (
     <>

@@ -1,14 +1,10 @@
-import { useContractInfiniteReads } from "wagmi";
-import Wrapper from "components/Wrapper";
-import { useNetwork } from "wagmi";
-import MonoLabel from "./MonoLabel";
-import { shorten } from "lib/utils";
-import { BigNumber } from "ethers";
-import Button from "./Button";
-import { erc721ABI } from "wagmi";
+import Wrapper from 'components/Wrapper';
+import {BigNumber} from 'ethers';
+import {shorten, type AddressString} from 'lib/utils';
+import {erc721ABI, useContractInfiniteReads, useNetwork} from 'wagmi';
 
-const ContractInfiniteReads = () => {
-  const { chain } = useNetwork();
+import Button from './Button';
+import MonoLabel from './MonoLabel';
 
   if (!chain) {
     return (
@@ -17,14 +13,16 @@ const ContractInfiniteReads = () => {
       </Wrapper>
     );
   }
+const ContractInfiniteReads = () => {
+  const {chain} = useNetwork();
 
   let contractAddress: string;
   switch (chain.id) {
     case 1:
-      contractAddress = "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d"; // Mainnet Bored Ape Yacht Club
+      contractAddress = '0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d'; // Mainnet Bored Ape Yacht Club
       break;
     case 5:
-      contractAddress = "0xe29f8038d1a3445ab22ad1373c65ec0a6e1161a4"; // Goerli (unofficial) Bored Ape Yacht Club
+      contractAddress = '0xe29f8038d1a3445ab22ad1373c65ec0a6e1161a4'; // Goerli (unofficial) Bored Ape Yacht Club
       break;
     default:
       return (
@@ -43,7 +41,7 @@ const ContractInfiniteReads = () => {
         {
           address: contractAddress,
           abi: erc721ABI,
-          functionName: "ownerOf",
+          functionName: 'ownerOf',
           args,
         },
       ];
@@ -67,11 +65,9 @@ const ContractInfiniteReads = () => {
     return (
       <Wrapper title="useContractInfiniteReads">
         <p>
-          Owner of <MonoLabel label={shorten(contractAddress)} /> Token ID{" "}
-          <MonoLabel label={data?.pages.length.toString() || "-1"} />:{" "}
-          <MonoLabel
-            label={shorten(data?.pages[data?.pages.length - 1].toString())}
-          />
+          Owner of <MonoLabel label={shorten(contractAddress)} /> Token ID{' '}
+          <MonoLabel label={data?.pages.length.toString() || '-1'} />:{' '}
+          <MonoLabel label={shorten(data?.pages[data?.pages.length - 1].toString())} />
         </p>
         <Button
           disabled={isLoading || isError}

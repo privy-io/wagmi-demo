@@ -1,10 +1,9 @@
-import Wrapper from "components/Wrapper";
-import { useSigner } from "wagmi";
 import { useState } from "react";
-import MonoLabel from "./MonoLabel";
+import Wrapper from 'components/Wrapper';
+import {useSigner} from 'wagmi';
 
 const Signer = () => {
-  const { data: signer, isError, isLoading } = useSigner();
+  const {data: signer, isError, isLoading} = useSigner();
 
   const [balance, setBalance] = useState<string | null>(null);
   const [chainId, setChainId] = useState<string | null>(null);
@@ -12,13 +11,7 @@ const Signer = () => {
   const [transactionCount, setTransactionCount] = useState<string | null>(null);
 
   const ready =
-    balance &&
-    chainId &&
-    gasPrice &&
-    transactionCount &&
-    signer &&
-    !isLoading &&
-    !isError;
+    balance && chainId && gasPrice && transactionCount && signer && !isLoading && !isError;
 
   signer?.getBalance().then((balance) => {
     setBalance(balance.toString());
