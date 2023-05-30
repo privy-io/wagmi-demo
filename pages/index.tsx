@@ -36,8 +36,17 @@ const MonoLabel = ({label}: {label: string}) => {
 
 export default function Home() {
   // Privy hooks
-  const {ready, authenticated, user, login, logout, linkWallet, unlinkWallet, setActiveWallet} =
-    usePrivy();
+  const {
+    ready,
+    authenticated,
+    user,
+    login,
+    connectWallet,
+    logout,
+    linkWallet,
+    unlinkWallet,
+    setActiveWallet,
+  } = usePrivy();
 
   // WAGMI hooks
   const {address, isConnected, isConnecting, isDisconnected} = useAccount();
@@ -96,7 +105,11 @@ export default function Home() {
             {ready && !authenticated && (
               <>
                 <p>You are not authenticated with Privy</p>
-                <Button onClick_={login} cta="Login with Privy" />
+                <div className="flex items-center gap-4">
+                  <Button onClick_={login} cta="Login with Privy" />
+                  <span>or</span>
+                  <Button onClick_={connectWallet} cta="Connect only" />
+                </div>
               </>
             )}
 
