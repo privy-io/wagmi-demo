@@ -20,8 +20,8 @@
   "dependencies": {
     "@ethersproject/address": "5.7.0",
     "@next/font": "13.1.1",
-    "@privy-io/react-auth": "^1.28.2",
-    "@privy-io/wagmi-connector": "0.0.11",
+    "@privy-io/react-auth": "^1.28.3",
+    "@privy-io/wagmi-connector": "~0.0.11",
     "@types/node": "18.11.18",
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.10",
