@@ -25,7 +25,7 @@ import WatchPendingTransactions from 'components/WatchPendingTransactions';
 import {shorten} from 'lib/utils';
 import Head from 'next/head';
 import Image from 'next/image';
-import {useAccount, useDisconnect, useSwitchNetwork} from 'wagmi';
+import {useAccount, useConfig, useDisconnect, useSwitchNetwork} from 'wagmi';
 
 import {usePrivy, useWallets} from '@privy-io/react-auth';
 import type {WalletWithMetadata} from '@privy-io/react-auth';

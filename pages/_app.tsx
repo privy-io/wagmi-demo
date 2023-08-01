@@ -12,10 +12,10 @@ const configureChainsConfig = configureChains([mainnet, goerli], [publicProvider
 
 export default function App({Component, pageProps}: AppProps) {
   return (
-    <PrivyProvider appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string}>
-      <PrivyWagmiConnector wagmiChainsConfig={configureChainsConfig}>
+    <PrivyWagmiConnector wagmiChainsConfig={configureChainsConfig}>
+    <PrivyProvider appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string} apiUrl={process.env.NEXT_PUBLIC_PRIVY_AUTH_URL}>
         <Component {...pageProps} />
-      </PrivyWagmiConnector>
     </PrivyProvider>
+    </PrivyWagmiConnector>
   );
 }
