@@ -68,10 +68,10 @@ const ContractReads = () => {
           return (
             <p key={tokenId}>
               Owner of ENS Token ID {shorten(tokenId)}:{' '}
-              {!data?.[index] ? (
+              {!data?.result ? (
                 <MonoLabel label="Error. Token may not exist on this network." />
               ) : (
-                <MonoLabel label={shorten(data?.[index] as string)} />
+                <MonoLabel label={shorten(data.result as string)} />
               )}
             </p>
           );

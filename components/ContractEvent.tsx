@@ -42,9 +42,7 @@ const ContractEvent = () => {
     ],
     eventName: 'NewOwner',
     listener(node, label, owner) {
-      setNode(node);
-      setLabel(label);
-      setOwner(owner);
+      console.log('nnnn', node);
     },
     once: true,
   });

@@ -1,7 +1,7 @@
 import Wrapper from 'components/Wrapper';
 import {shorten} from 'lib/utils';
 import {useState} from 'react';
-import {useContract, useProvider} from 'wagmi';
+import {useContractEvent} from 'wagmi';
 
 import MonoLabel from './MonoLabel';
 
@@ -10,8 +10,7 @@ const Contract = () => {
   const [label, setLabel] = useState<string | null>(null);
   const [owner, setOwner] = useState<string | null>(null);
 
-  const provider = useProvider();
-  const contract = useContract({
+  useContractEvent({
     address: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e', // ENS Mainnet and Goerli Registry
     abi: [
       {
@@ -40,13 +39,12 @@ const Contract = () => {
         type: 'event',
       },
     ],
-    signerOrProvider: provider,
-  });
-
-  contract?.once('NewOwner', (node, label, owner) => {
-    setNode(node);
-    setLabel(label);
-    setOwner(owner);
+    eventName: 'NewOwner',
+    listener(log) {
+      setNode(log.args.node);
+      setLabel(log.args.label);
+      setOwner(log.args.owner);
+    },
   });
 
   return (
