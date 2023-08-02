@@ -4,7 +4,7 @@ import {useEnsAvatar} from 'wagmi';
 
 const EnsAvatar = () => {
   const {data, isError, isLoading} = useEnsAvatar({
-    address: '0xd8da6bf26964af9d7eed9e03e53415d37aa96045', // vitalik.eth
+    name: 'vitalik.eth',
   });
   if (isLoading) return <Wrapper title="useEnsAvatar">Fetching avatar…</Wrapper>;
   if (isError) return <Wrapper title="useEnsAvatar">Error fetching avatar</Wrapper>;

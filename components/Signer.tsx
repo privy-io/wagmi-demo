@@ -27,9 +27,11 @@ const Signer = () => {
     publicClient?.getGasPrice().then((gasPrice) => {
       setGasPrice(gasPrice.toString());
     });
-    // walletClient?.getTransactionCount().then((transactionCount) => {
-    //   setTransactionCount(transactionCount.toString());
-    // });
+    publicClient
+      ?.getTransactionCount({address: walletClient.account.address})
+      .then((transactionCount) => {
+        setTransactionCount(transactionCount.toString());
+      });
   }, [walletClient, publicClient]);
 
   if (isError) {

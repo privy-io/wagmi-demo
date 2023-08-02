@@ -47,7 +47,6 @@
     "tailwindcss": "^3.2.4"
   },
   "relativeDependencies": {
-    "@privy-io/react-auth": "../react-auth",
     "@privy-io/wagmi-connector": "../wagmi-connector"
   }
 }

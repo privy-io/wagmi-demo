@@ -1,6 +1,6 @@
 import '../styles/globals.css';
 
-import {goerli, mainnet} from '@wagmi/core/chains';
+import {goerli, mainnet} from '@wagmi/chains';
 import type {AppProps} from 'next/app';
 import {configureChains} from 'wagmi';
 import {publicProvider} from 'wagmi/providers/public';
@@ -12,10 +12,13 @@ const configureChainsConfig = configureChains([mainnet, goerli], [publicProvider
 
 export default function App({Component, pageProps}: AppProps) {
   return (
-    <PrivyWagmiConnector wagmiChainsConfig={configureChainsConfig}>
-    <PrivyProvider appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string} apiUrl={process.env.NEXT_PUBLIC_PRIVY_AUTH_URL}>
+    <PrivyProvider
+      appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string}
+      apiUrl={process.env.NEXT_PUBLIC_PRIVY_AUTH_URL}
+    >
+      <PrivyWagmiConnector wagmiChainsConfig={configureChainsConfig}>
         <Component {...pageProps} />
+      </PrivyWagmiConnector>
     </PrivyProvider>
-    </PrivyWagmiConnector>
   );
 }

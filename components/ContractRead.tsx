@@ -1,5 +1,4 @@
 import Wrapper from 'components/Wrapper';
-import {BigNumber} from 'ethers';
 import {shorten, type AddressString} from 'lib/utils';
 import {erc721ABI, useContractRead, useNetwork} from 'wagmi';
 
@@ -21,7 +20,7 @@ const ContractRead = () => {
     address: contractAddress,
     abi: erc721ABI,
     functionName: 'ownerOf',
-    args: [BigNumber.from(tokenId)],
+    args: [BigInt(tokenId)],
     enabled: !!contractAddress,
   });
 

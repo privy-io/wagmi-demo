@@ -40,10 +40,11 @@ const Contract = () => {
       },
     ],
     eventName: 'NewOwner',
-    listener(log) {
-      setNode(log.args.node);
-      setLabel(log.args.label);
-      setOwner(log.args.owner);
+    listener(logs: {args: {node: string; label: string; owner: string}}[]) {
+      const {args} = logs.slice(-1)[0];
+      setNode(args.node);
+      setLabel(args.label);
+      setOwner(args.owner);
     },
   });
 

@@ -1,5 +1,4 @@
 import Wrapper from 'components/Wrapper';
-import {BigNumber} from 'ethers';
 import {shorten, type AddressString} from 'lib/utils';
 import {erc721ABI, useContractInfiniteReads, useNetwork} from 'wagmi';
 
@@ -22,7 +21,7 @@ const ContractInfiniteReads = () => {
   const {data, isError, isLoading, fetchNextPage} = useContractInfiniteReads({
     cacheKey: 'baycOwners',
     contracts(param = 0) {
-      const args = [BigNumber.from(param)] as const;
+      const args = [BigInt(param)] as const;
       return [
         {
           address: contractAddress!,
@@ -70,7 +69,7 @@ const ContractInfiniteReads = () => {
         <p>
           Owner of <MonoLabel label={shorten(contractAddress)} /> Token ID{' '}
           <MonoLabel label={data?.pages.length.toString() || '-1'} />:{' '}
-          <MonoLabel label={shorten(data?.pages[data?.pages.length - 1].toString())} />
+          <MonoLabel label={shorten(data?.pages[data?.pages.length - 1][0].result?.toString())} />
         </p>
         <Button
           disabled={isLoading || isError}

@@ -1,7 +1,7 @@
 import Wrapper from 'components/Wrapper';
-import type {Transaction} from 'ethers';
-import type {AddressString} from 'lib/utils';
+import {type AddressString, stringifyTransaction} from 'lib/utils';
 import {useState} from 'react';
+import type {OnTransactionsParameter} from 'viem/dist/types/actions/public/watchPendingTransactions';
 import {useNetwork, useWaitForTransaction, useWatchPendingTransactions} from 'wagmi';
 
 import SmallTextArea from './SmallTextArea';
@@ -9,7 +9,7 @@ import SmallTextArea from './SmallTextArea';
 const WaitForTransaction = () => {
   const {chain} = useNetwork();
   const [waiting, setWaiting] = useState(true);
-  const [transaction, setTransaction] = useState<Transaction>();
+  const [transaction, setTransaction] = useState<OnTransactionsParameter>();
 
   useWatchPendingTransactions({
     chainId: chain?.id,
@@ -21,8 +21,8 @@ const WaitForTransaction = () => {
   });
 
   const {data, isError, isLoading} = useWaitForTransaction({
-    hash: transaction?.hash as AddressString | undefined,
-    enabled: !waiting && !!transaction?.hash,
+    hash: transaction?.[0] as AddressString | undefined,
+    enabled: !waiting && !!transaction?.[0],
   });
 
   if (!chain) {
@@ -49,7 +49,7 @@ const WaitForTransaction = () => {
     return (
       <Wrapper title="useWaitForTransaction">
         <p className="mb-2">First settled transaction:</p>
-        <SmallTextArea content={JSON.stringify(data, null, 2)} />
+        <SmallTextArea content={stringifyTransaction(data)} />
       </Wrapper>
     );
   }

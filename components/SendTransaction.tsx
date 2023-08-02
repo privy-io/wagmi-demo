@@ -1,15 +1,14 @@
 import Button from 'components/Button';
 import Wrapper from 'components/Wrapper';
-import {BigNumber} from 'ethers';
+import {parseEther} from 'viem';
 import {usePrepareSendTransaction, useSendTransaction} from 'wagmi';
 
 const SendTransaction = () => {
   const {config} = usePrepareSendTransaction({
-    request: {
-      to: 'privyio.eth',
-      value: BigNumber.from('10000000000000000'),
-    },
+    to: '0xF2A919977c6dE88dd8ed90feAADFcC5d65D66038',
+    value: parseEther('0.001'),
   });
+
   const {data, isLoading, isSuccess, sendTransaction} = useSendTransaction(config);
 
   return (
