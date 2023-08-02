@@ -14,8 +14,7 @@
     "format": "next lint --fix && npx prettier --write \"{components,lib,pages,styles}/**/*.{ts,tsx,js,jsx}\"",
     "lint": "next lint && npx prettier --check \"{components,lib,pages,styles}/**/*.{ts,tsx,js,jsx}\" && npx tsc --noEmit",
     "prepare": "relative-deps",
-    "prestart": "relative-deps",
-    "prebuild": "relative-deps"
+    "prestart": "relative-deps"
   },
   "dependencies": {
     "@ethersproject/address": "5.7.0",
