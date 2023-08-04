@@ -3,7 +3,6 @@ import type {
   TransactionLegacy,
   TransactionEIP1559,
   TransactionEIP2930,
-  OnTransactionsParameter
 } from 'viem';
 
 export const shorten = (address: string | undefined) => {
