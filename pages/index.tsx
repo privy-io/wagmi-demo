@@ -27,7 +27,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import {useAccount, useDisconnect} from 'wagmi';
 
-import {usePrivy, useWallets} from '@privy-io/react-auth';
+import {type WalletWithMetadata, usePrivy, useWallets} from '@privy-io/react-auth';
 import {usePrivyWagmi} from '@privy-io/wagmi-connector';
 
 import wagmiPrivyLogo from '../public/wagmi_privy_logo.png';
@@ -38,14 +38,17 @@ const MonoLabel = ({label}: {label: string}) => {
 
 export default function Home() {
   // Privy hooks
-  const {ready, authenticated, login, connectWallet, logout, linkWallet, unlinkWallet} = usePrivy();
-  const {wallets} = useWallets();
+  const {ready, user, authenticated, login, connectWallet, logout, linkWallet, unlinkWallet} =
+    usePrivy();
+  const {wallets: connectedWallets} = useWallets();
 
   const {wallet: activeWallet, setActiveWallet} = usePrivyWagmi();
 
   // WAGMI hooks
   const {address, isConnected, isConnecting, isDisconnected} = useAccount();
   const {disconnect} = useDisconnect();
+
+  const wallets = user?.linkedAccounts.filter((a) => a.type === 'wallet') as WalletWithMetadata[];
 
   if (!ready) {
     return;
@@ -120,7 +123,13 @@ export default function Home() {
                       </div>
                       <Button
                         cta="Make active"
-                        onClick_={() => setActiveWallet(wallet)}
+                        onClick_={() => {
+                          const connectedWallet = connectedWallets.find(
+                            (w) => w.address === wallet.address,
+                          );
+                          if (!connectedWallet) connectWallet();
+                          else setActiveWallet(connectedWallet);
+                        }}
                         disabled={wallet.address === activeWallet?.address}
                       />
                       <Button cta="Unlink" onClick_={() => unlinkWallet(wallet.address)} />
