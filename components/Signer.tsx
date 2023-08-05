@@ -1,9 +1,11 @@
 import Wrapper from 'components/Wrapper';
 import {useEffect, useState} from 'react';
-import {useSigner} from 'wagmi';
+import {usePublicClient} from 'wagmi';
+import {useWalletClient} from 'wagmi';
 
 const Signer = () => {
-  const {data: signer, isError, isLoading} = useSigner();
+  const publicClient = usePublicClient();
+  const {data: walletClient, isError, isLoading} = useWalletClient();
 
   const [balance, setBalance] = useState<string | null>(null);
   const [chainId, setChainId] = useState<string | null>(null);
@@ -11,24 +13,26 @@ const Signer = () => {
   const [transactionCount, setTransactionCount] = useState<string | null>(null);
 
   const ready =
-    balance && chainId && gasPrice && transactionCount && signer && !isLoading && !isError;
+    balance && chainId && gasPrice && transactionCount && walletClient && !isLoading && !isError;
 
   useEffect(() => {
-    if (!signer) return;
+    if (!walletClient) return;
 
-    signer?.getBalance().then((balance) => {
+    publicClient?.getBalance({address: walletClient.account.address}).then((balance) => {
       setBalance(balance.toString());
     });
-    signer?.getChainId().then((chainId) => {
+    walletClient?.getChainId().then((chainId) => {
       setChainId(chainId.toString());
     });
-    signer?.getGasPrice().then((gasPrice) => {
+    publicClient?.getGasPrice().then((gasPrice) => {
       setGasPrice(gasPrice.toString());
     });
-    signer?.getTransactionCount().then((transactionCount) => {
-      setTransactionCount(transactionCount.toString());
-    });
-  }, [signer]);
+    publicClient
+      ?.getTransactionCount({address: walletClient.account.address})
+      .then((transactionCount) => {
+        setTransactionCount(transactionCount.toString());
+      });
+  }, [walletClient, publicClient]);
 
   if (isError) {
     return (

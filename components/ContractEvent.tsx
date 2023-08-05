@@ -41,12 +41,12 @@ const ContractEvent = () => {
       },
     ],
     eventName: 'NewOwner',
-    listener(node, label, owner) {
-      setNode(node);
-      setLabel(label);
-      setOwner(owner);
+    listener(logs: {args: {node: string; label: string; owner: string}}[]) {
+      const {args} = logs.slice(-1)[0];
+      setNode(args.node);
+      setLabel(args.label);
+      setOwner(args.owner);
     },
-    once: true,
   });
 
   if (!chain) {

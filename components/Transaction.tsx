@@ -1,5 +1,5 @@
 import Wrapper from 'components/Wrapper';
-import {shorten, type AddressString} from 'lib/utils';
+import {shorten, type AddressString, stringifyTransaction} from 'lib/utils';
 import {useNetwork, useTransaction} from 'wagmi';
 
 import SmallTextArea from './SmallTextArea';
@@ -59,7 +59,7 @@ const Transaction = () => {
           ) : (
             <div>
               <p className="mb-2">Transaction response for {shorten(data.hash)}:</p>
-              <SmallTextArea content={JSON.stringify(data, null, 2)} />
+              <SmallTextArea content={stringifyTransaction(data)} />
             </div>
           )}
         </div>

@@ -1,5 +1,4 @@
 import Wrapper from 'components/Wrapper';
-import {BigNumber} from 'ethers';
 import {shorten, type AddressString} from 'lib/utils';
 import {erc721ABI, useContractReads, useNetwork} from 'wagmi';
 
@@ -27,7 +26,7 @@ const ContractReads = () => {
         address: contractAddress,
         abi: erc721ABI,
         functionName: 'ownerOf',
-        args: [BigNumber.from(tokenId)],
+        args: [BigInt(tokenId)],
       };
     }),
     enabled: !!contractAddress,
@@ -68,10 +67,10 @@ const ContractReads = () => {
           return (
             <p key={tokenId}>
               Owner of ENS Token ID {shorten(tokenId)}:{' '}
-              {!data?.[index] ? (
+              {!data[index].result ? (
                 <MonoLabel label="Error. Token may not exist on this network." />
               ) : (
-                <MonoLabel label={shorten(data?.[index] as string)} />
+                <MonoLabel label={shorten(data[index].result as string)} />
               )}
             </p>
           );

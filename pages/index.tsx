@@ -25,10 +25,10 @@ import WatchPendingTransactions from 'components/WatchPendingTransactions';
 import {shorten} from 'lib/utils';
 import Head from 'next/head';
 import Image from 'next/image';
-import {useAccount, useDisconnect, useSwitchNetwork} from 'wagmi';
+import {useAccount, useDisconnect} from 'wagmi';
 
-import {usePrivy} from '@privy-io/react-auth';
-import type {WalletWithMetadata} from '@privy-io/react-auth';
+import {type WalletWithMetadata, usePrivy, useWallets} from '@privy-io/react-auth';
+import {usePrivyWagmi} from '@privy-io/wagmi-connector';
 
 import wagmiPrivyLogo from '../public/wagmi_privy_logo.png';
 
@@ -38,27 +38,17 @@ const MonoLabel = ({label}: {label: string}) => {
 
 export default function Home() {
   // Privy hooks
-  const {
-    ready,
-    authenticated,
-    user,
-    login,
-    connectWallet,
-    logout,
-    linkWallet,
-    unlinkWallet,
-    setActiveWallet,
-  } = usePrivy();
+  const {ready, user, authenticated, login, connectWallet, logout, linkWallet, unlinkWallet} =
+    usePrivy();
+  const {wallets: connectedWallets} = useWallets();
+
+  const {wallet: activeWallet, setActiveWallet} = usePrivyWagmi();
 
   // WAGMI hooks
   const {address, isConnected, isConnecting, isDisconnected} = useAccount();
-  // Importing this fixes useSigner.
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const {switchNetwork} = useSwitchNetwork();
   const {disconnect} = useDisconnect();
 
-  const linkedAccounts = user?.linkedAccounts || [];
-  const wallets = linkedAccounts.filter((a) => a.type === 'wallet') as WalletWithMetadata[];
+  const wallets = user?.linkedAccounts.filter((a) => a.type === 'wallet') as WalletWithMetadata[];
 
   if (!ready) {
     return;
@@ -120,7 +110,7 @@ export default function Home() {
                 <p>
                   You are logged in with privy.
                   <br />
-                  Active wallet is <MonoLabel label={user?.wallet?.address || ''} />
+                  Active wallet is <MonoLabel label={activeWallet?.address || ''} />
                 </p>
                 {wallets.map((wallet) => {
                   return (
@@ -133,8 +123,14 @@ export default function Home() {
                       </div>
                       <Button
                         cta="Make active"
-                        onClick_={() => setActiveWallet(wallet.address)}
-                        disabled={wallet.address === user?.wallet?.address}
+                        onClick_={() => {
+                          const connectedWallet = connectedWallets.find(
+                            (w) => w.address === wallet.address,
+                          );
+                          if (!connectedWallet) connectWallet();
+                          else setActiveWallet(connectedWallet);
+                        }}
+                        disabled={wallet.address === activeWallet?.address}
                       />
                       <Button cta="Unlink" onClick_={() => unlinkWallet(wallet.address)} />
                     </div>

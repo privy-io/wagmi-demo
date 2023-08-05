@@ -26,7 +26,7 @@ const SignTypedData = () => {
     ],
   } as const;
 
-  const value = {
+  const message = {
     from: {
       name: 'Cow',
       wallet: '0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826',
@@ -38,9 +38,10 @@ const SignTypedData = () => {
     contents: 'Hello, Bob!',
   } as const;
   const {data, isError, isLoading, isSuccess, signTypedData} = useSignTypedData({
+    primaryType: 'Mail',
     domain,
     types,
-    value,
+    message,
   });
 
   return (
