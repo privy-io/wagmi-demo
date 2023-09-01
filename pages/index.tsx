@@ -1,31 +1,9 @@
-import Balance from 'components/Balance';
-import BlockNumber from 'components/BlockNumber';
 import Button from 'components/Button';
-import Contract from 'components/Contract';
-import ContractEvent from 'components/ContractEvent';
-import ContractInfiniteReads from 'components/ContractInfiniteReads';
-import ContractRead from 'components/ContractRead';
-import ContractReads from 'components/ContractReads';
-import ContractWrite from 'components/ContractWrite';
-import EnsAddress from 'components/EnsAddress';
-import EnsAvatar from 'components/EnsAvatar';
-import EnsName from 'components/EnsName';
-import EnsResolver from 'components/EnsResolver';
-import FeeData from 'components/FeeData';
-import Provider from 'components/Provider';
-import SendTransaction from 'components/SendTransaction';
-import SignMessage from 'components/SignMessage';
-import SignTypedData from 'components/SignTypedData';
-import Signer from 'components/Signer';
-import SwitchNetwork from 'components/SwitchNetwork';
-import Token from 'components/Token';
-import Transaction from 'components/Transaction';
-import WaitForTransaction from 'components/WaitForTransaction';
-import WatchPendingTransactions from 'components/WatchPendingTransactions';
+import Debug from 'components/Debug';
 import {shorten} from 'lib/utils';
 import Head from 'next/head';
 import Image from 'next/image';
-import {useAccount, useDisconnect} from 'wagmi';
+import {useAccount} from 'wagmi';
 
 import {type WalletWithMetadata, usePrivy, useWallets} from '@privy-io/react-auth';
 import {usePrivyWagmi} from '@privy-io/wagmi-connector';
@@ -46,7 +24,6 @@ export default function Home() {
 
   // WAGMI hooks
   const {address, isConnected, isConnecting, isDisconnected} = useAccount();
-  const {disconnect} = useDisconnect();
 
   const wallets = user?.linkedAccounts.filter((a) => a.type === 'wallet') as WalletWithMetadata[];
 
@@ -157,32 +134,7 @@ export default function Home() {
                   address: <MonoLabel label={address} />
                 </p>
 
-                <Balance />
-                <Signer />
-                <SignMessage />
-                <SignTypedData />
-                <Provider />
-                <EnsName />
-                <EnsAddress />
-                <EnsAvatar />
-                <EnsResolver />
-                <SwitchNetwork />
-                <BlockNumber />
-                <SendTransaction />
-                <ContractRead />
-                <ContractReads />
-                <ContractInfiniteReads />
-                <ContractWrite />
-                <ContractEvent />
-                <Contract />
-                <FeeData />
-                <Token />
-                <Transaction />
-                <WatchPendingTransactions />
-                <WaitForTransaction />
-
-                <h2 className="mt-6 text-2xl">useDisconnect</h2>
-                <Button onClick_={disconnect} cta="Disconnect from WAGMI" />
+                <Debug />
               </>
             )}
           </div>

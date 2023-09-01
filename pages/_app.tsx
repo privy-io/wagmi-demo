@@ -1,9 +1,9 @@
 import '../styles/globals.css';
 
-import {goerli, mainnet} from '@wagmi/chains';
+import {goerli, polygonMumbai} from '@wagmi/chains';
 import type {AppProps} from 'next/app';
 import {configureChains} from 'wagmi';
-import {publicProvider} from 'wagmi/providers/public';
+import {alchemyProvider} from 'wagmi/providers/alchemy';
 
 import {PrivyProvider} from '@privy-io/react-auth';
 import {PrivyWagmiConnector} from '@privy-io/wagmi-connector';
