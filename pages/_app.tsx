@@ -8,7 +8,10 @@ import {publicProvider} from 'wagmi/providers/public';
 import {PrivyProvider} from '@privy-io/react-auth';
 import {PrivyWagmiConnector} from '@privy-io/wagmi-connector';
 
-const configureChainsConfig = configureChains([mainnet, goerli], [publicProvider()]);
+const configureChainsConfig = configureChains(
+  [polygonMumbai, goerli],
+  [alchemyProvider({apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY as string})],
+);
 
 export default function App({Component, pageProps}: AppProps) {
   return (
