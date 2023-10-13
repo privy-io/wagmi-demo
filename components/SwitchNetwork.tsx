@@ -1,6 +1,8 @@
 import Button from 'components/Button';
 import MonoLabel from 'components/MonoLabel';
-import {useNetwork, useSwitchNetwork} from 'wagmi';
+import {useNetwork} from 'wagmi';
+
+import {useSwitchNetwork} from '@privy-io/wagmi-connector';
 
 const SwitchNetwork = () => {
   const {chain} = useNetwork();
@@ -12,7 +14,6 @@ const SwitchNetwork = () => {
     pendingChainId,
     switchNetwork,
   } = useSwitchNetwork({
-    throwForSwitchChainNotSupported: true,
     onError(error) {
       console.log('Switch network error', error);
     },
