@@ -3,16 +3,16 @@ import {usePublicClient} from 'wagmi';
 
 import MonoLabel from './MonoLabel';
 
-const Provider = () => {
+const PublicClient = () => {
   const provider = usePublicClient();
 
   return (
-    <Wrapper title="useProvider">
+    <Wrapper title="usePublicClient">
       <p>
-        Provider loaded: <MonoLabel label={provider ? 'success' : 'waiting'} />
+        Public Client loaded: <MonoLabel label={provider ? 'success' : 'waiting'} />
       </p>
     </Wrapper>
   );
 };
 
-export default Provider;
+export default PublicClient;
