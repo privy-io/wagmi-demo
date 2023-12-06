@@ -28,7 +28,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import {useAccount, useDisconnect} from 'wagmi';
 
-import {type WalletWithMetadata, usePrivy, useWallets} from '@privy-io/react-auth';
+import {usePrivy, useWallets} from '@privy-io/react-auth';
 import {usePrivyWagmi} from '@privy-io/wagmi-connector';
 
 import wagmiPrivyLogo from '../public/wagmi_privy_logo.png';
@@ -39,7 +39,7 @@ const MonoLabel = ({label}: {label: string}) => {
 
 export default function Home() {
   // Privy hooks
-  const {ready, user, authenticated, login, connectWallet, logout, linkWallet, unlinkWallet} =
+  const {ready, authenticated, login, connectWallet, logout, linkWallet, unlinkWallet} =
     usePrivy();
   const {wallets: connectedWallets} = useWallets();
 
@@ -49,7 +49,7 @@ export default function Home() {
   const {address, isConnected, isConnecting, isDisconnected} = useAccount();
   const {disconnect} = useDisconnect();
 
-  const wallets = connectedWallets as WalletWithMetadata[];
+  const wallets = connectedWallets;
 
   if (!ready) {
     return;
