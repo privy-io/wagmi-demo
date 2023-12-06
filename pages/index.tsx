@@ -12,7 +12,7 @@ import EnsAvatar from 'components/EnsAvatar';
 import EnsName from 'components/EnsName';
 import EnsResolver from 'components/EnsResolver';
 import FeeData from 'components/FeeData';
-import Provider from 'components/Provider';
+import PublicClient from 'components/PublicClient';
 import SendTransaction from 'components/SendTransaction';
 import SignMessage from 'components/SignMessage';
 import SignTypedData from 'components/SignTypedData';
@@ -22,6 +22,7 @@ import Token from 'components/Token';
 import Transaction from 'components/Transaction';
 import WaitForTransaction from 'components/WaitForTransaction';
 import WatchPendingTransactions from 'components/WatchPendingTransactions';
+import WalletClient from 'components/WalletClient';
 import {shorten} from 'lib/utils';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -48,7 +49,7 @@ export default function Home() {
   const {address, isConnected, isConnecting, isDisconnected} = useAccount();
   const {disconnect} = useDisconnect();
 
-  const wallets = user?.linkedAccounts.filter((a) => a.type === 'wallet') as WalletWithMetadata[];
+  const wallets = connectedWallets as WalletWithMetadata[];
 
   if (!ready) {
     return;
@@ -161,7 +162,7 @@ export default function Home() {
                 <Signer />
                 <SignMessage />
                 <SignTypedData />
-                <Provider />
+                <PublicClient />
                 <EnsName />
                 <EnsAddress />
                 <EnsAvatar />
@@ -179,6 +180,7 @@ export default function Home() {
                 <Token />
                 <Transaction />
                 <WatchPendingTransactions />
+                <WalletClient />
                 <WaitForTransaction />
 
                 <h2 className="mt-6 text-2xl">useDisconnect</h2>

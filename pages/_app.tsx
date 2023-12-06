@@ -14,7 +14,7 @@ export default function App({Component, pageProps}: AppProps) {
   return (
     <PrivyProvider
       appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string}
-      config={{embeddedWallets: {createOnLogin: 'all-users', requireUserPasswordOnCreate: false}}}
+      config={{embeddedWallets: {createOnLogin: 'all-users', requireUserPasswordOnCreate: false}, loginMethods: ['wallet', 'email', 'sms']}}
     >
       <PrivyWagmiConnector wagmiChainsConfig={configureChainsConfig}>
         <Component {...pageProps} />
