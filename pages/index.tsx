@@ -32,6 +32,7 @@ import {usePrivy, useWallets} from '@privy-io/react-auth';
 import {usePrivyWagmi} from '@privy-io/wagmi-connector';
 
 import wagmiPrivyLogo from '../public/wagmi_privy_logo.png';
+import { useEffect } from 'react';
 
 const MonoLabel = ({label}: {label: string}) => {
   return <span className="rounded-xl bg-slate-200 px-2 py-1 font-mono">{label}</span>;
@@ -39,7 +40,7 @@ const MonoLabel = ({label}: {label: string}) => {
 
 export default function Home() {
   // Privy hooks
-  const {ready, authenticated, login, connectWallet, logout, linkWallet, unlinkWallet} =
+  const {ready, user, authenticated, login, connectWallet, logout, linkWallet, unlinkWallet} =
     usePrivy();
   const {wallets: connectedWallets} = useWallets();
 
@@ -54,6 +55,10 @@ export default function Home() {
   if (!ready) {
     return;
   }
+
+    console.log("connected wallets: ", wallets)
+    console.log("user's wallets", user?.wallet)
+
 
   return (
     <>
@@ -133,12 +138,16 @@ export default function Home() {
                         }}
                         disabled={wallet.address === activeWallet?.address}
                       />
-                      <Button cta="Unlink" onClick_={() => unlinkWallet(wallet.address)} />
                     </div>
                   );
                 })}
                 <Button onClick_={linkWallet} cta="Link another wallet" />
-
+                <textarea
+                  value={JSON.stringify(user, null, 2)}
+                  className="mt-2 max-w-4xl rounded-md bg-slate-700 p-4 font-mono text-xs text-slate-50 sm:text-sm"
+                  rows={JSON.stringify(user, null, 2).split('\n').length}
+                  disabled
+            />
                 <br />
                 <Button onClick_={logout} cta="Logout from Privy" />
               </>
