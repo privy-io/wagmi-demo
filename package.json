@@ -7,7 +7,7 @@
     "node": ">=18.0.0 <19.0.0"
   },
   "scripts": {
-    "dev": "next -p 3000",
+    "dev": "next -p 4000",
     "build": "next build",
     "start": "next start",
     "clean": "rm -rf .next/cache && rm -rf ./node_modules",

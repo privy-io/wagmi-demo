@@ -27,6 +27,8 @@ export default function App({Component, pageProps}: AppProps) {
   return (
     <PrivyProvider
       appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string}
+      //@ts-ignore
+      apiUrl={process.env.NEXT_PUBLIC_PRIVY_AUTH_URL}
       config={privyConfig}
     >
       <PrivyWagmiConnector wagmiChainsConfig={configureChainsConfig}>
