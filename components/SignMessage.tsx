@@ -7,13 +7,7 @@ import {usePrivy} from '@privy-io/react-auth';
 const SignMessage = () => {
   const {user} = usePrivy();
   const {address} = useAccount();
-  const {
-    data,
-    isLoading,
-    isSuccess,
-    isError,
-    signMessage,
-  } = useSignMessage({
+  const {data, isLoading, isSuccess, isError, signMessage} = useSignMessage({
     onSuccess() {
       console.log('Sign Message Success');
     },
