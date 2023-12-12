@@ -14,4 +14,18 @@ You can get to this point by running:
 ```
 $ npx relative-deps add ../path/to/wagmi-connector
 $ npx relative-deps add ../path/to/react-auth
+$ foundryup
+```
+
+In order to run playwright testing, ensure that you have foundry installed.
+```
+$ curl -L https://foundry.paradigm.xyz | bash
+$ source /Users/{your-account}/.zshenv
+$ 
+```
+
+Then run the following commands:
+```
+$ npm i
+$ npm run test:e2e
 ```
