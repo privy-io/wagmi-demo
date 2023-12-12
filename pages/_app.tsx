@@ -5,10 +5,23 @@ import type {AppProps} from 'next/app';
 import {configureChains} from 'wagmi';
 import {publicProvider} from 'wagmi/providers/public';
 
-import {PrivyProvider} from '@privy-io/react-auth';
+import {PrivyClientConfig, PrivyProvider} from '@privy-io/react-auth';
 import {PrivyWagmiConnector} from '@privy-io/wagmi-connector';
 
 const configureChainsConfig = configureChains([mainnet, goerli], [publicProvider()]);
+
+const privyConfig: PrivyClientConfig = {
+  embeddedWallets: {
+    createOnLogin: 'users-without-wallets',
+    requireUserPasswordOnCreate: true,
+    noPromptOnSignature: false,
+  },
+  loginMethods: ['wallet', 'email'],
+  appearance: {
+    showWalletLoginFirst: true,
+  },
+}
+
 
 export default function App({Component, pageProps}: AppProps) {
   return (
@@ -16,7 +29,7 @@ export default function App({Component, pageProps}: AppProps) {
       appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string}
       // @ts-ignore
       apiUrl={process.env.NEXT_PUBLIC_PRIVY_AUTH_URL as string}
-      config={{embeddedWallets: {createOnLogin: 'all-users', requireUserPasswordOnCreate: false}, loginMethods: ['wallet', 'email', 'sms']}}
+      config={privyConfig}
     >
       <PrivyWagmiConnector wagmiChainsConfig={configureChainsConfig}>
         <Component {...pageProps} />

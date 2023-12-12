@@ -57,7 +57,7 @@ export default function Home() {
   }
 
     console.log("connected wallets: ", wallets)
-    console.log("user's wallets", user?.wallet)
+    console.log("user's wallets", user?.linkedAccounts)
 
 
   return (
