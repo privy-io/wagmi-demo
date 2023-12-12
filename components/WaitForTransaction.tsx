@@ -1,7 +1,7 @@
 import Wrapper from 'components/Wrapper';
 import {type AddressString, stringifyTransaction} from 'lib/utils';
 import {useState} from 'react';
-import type {OnTransactionsParameter} from 'viem/dist/types/actions/public/watchPendingTransactions';
+import type { OnTransactionsParameter } from 'viem';
 import {useNetwork, useWaitForTransaction, useWatchPendingTransactions} from 'wagmi';
 
 import SmallTextArea from './SmallTextArea';
