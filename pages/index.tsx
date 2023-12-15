@@ -21,8 +21,8 @@ import SwitchNetwork from 'components/SwitchNetwork';
 import Token from 'components/Token';
 import Transaction from 'components/Transaction';
 import WaitForTransaction from 'components/WaitForTransaction';
-import WatchPendingTransactions from 'components/WatchPendingTransactions';
 import WalletClient from 'components/WalletClient';
+import WatchPendingTransactions from 'components/WatchPendingTransactions';
 import {shorten} from 'lib/utils';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -39,8 +39,7 @@ const MonoLabel = ({label}: {label: string}) => {
 
 export default function Home() {
   // Privy hooks
-  const {ready, authenticated, login, connectWallet, logout, linkWallet, unlinkWallet} =
-    usePrivy();
+  const {ready, user, authenticated, login, connectWallet, logout, linkWallet} = usePrivy();
   const {wallets: connectedWallets} = useWallets();
 
   const {wallet: activeWallet, setActiveWallet} = usePrivyWagmi();
@@ -50,10 +49,12 @@ export default function Home() {
   const {disconnect} = useDisconnect();
 
   const wallets = connectedWallets;
-
   if (!ready) {
     return;
   }
+
+  console.log('connected wallets: ', wallets);
+  console.log("user's wallets", user?.linkedAccounts);
 
   return (
     <>
@@ -133,12 +134,23 @@ export default function Home() {
                         }}
                         disabled={wallet.address === activeWallet?.address}
                       />
-                      <Button cta="Unlink" onClick_={() => unlinkWallet(wallet.address)} />
                     </div>
                   );
                 })}
                 <Button onClick_={linkWallet} cta="Link another wallet" />
-
+                <textarea
+                  value={JSON.stringify(user, null, 2)}
+                  className="mt-2 max-w-4xl rounded-md bg-slate-700 p-4 font-mono text-xs text-slate-50 sm:text-sm"
+                  rows={JSON.stringify(user, null, 2).split('\n').length}
+                  disabled
+                />
+                <br />
+                <textarea
+                  value={JSON.stringify(connectedWallets, null, 2)}
+                  className="mt-2 max-w-4xl rounded-md bg-slate-700 p-4 font-mono text-xs text-slate-50 sm:text-sm"
+                  rows={JSON.stringify(connectedWallets, null, 2).split('\n').length}
+                  disabled
+                />
                 <br />
                 <Button onClick_={logout} cta="Logout from Privy" />
               </>
