@@ -16,22 +16,22 @@ test('should connect a wallet', async ({
   page
 }) => {
   await page.waitForSelector('div:has-text("Logout from Privy")')
-  await sleep(1000)
+  await sleep(1000) // used so that you can see the signature on the screen
 })
 
 test('should sign a message', async ({
   page,
 }) => {
   await signMessage(page, wallet, "Sign!")
-  await page.waitForSelector('div:has-text("Signature: ")')
-  await sleep(1000)
+  await page.getByText('/^Signature: ').isVisible()
+  await sleep(1000) // used so that you can see the signature on the screen
 })
 
 test('should sign a typed message', async ({
   page,
 }) => {
   await signTypedData(page, wallet, "Sign typed data!")
-  await page.waitForSelector('div:has-text("Signature: ")')
-  await sleep(1000)
+  await page.getByText('/^Signature: ').isVisible()
+  await sleep(1000) // used so that you can see the signature on the screen
 })
 

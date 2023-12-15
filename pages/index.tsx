@@ -145,6 +145,13 @@ export default function Home() {
                   disabled
                 />
                 <br />
+                <textarea
+                  value={JSON.stringify(connectedWallets, null, 2)}
+                  className="mt-2 max-w-4xl rounded-md bg-slate-700 p-4 font-mono text-xs text-slate-50 sm:text-sm"
+                  rows={JSON.stringify(connectedWallets, null, 2).split('\n').length}
+                  disabled
+                />
+                <br />
                 <Button onClick_={logout} cta="Logout from Privy" />
               </>
             )}
