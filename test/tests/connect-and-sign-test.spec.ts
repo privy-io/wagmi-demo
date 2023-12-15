@@ -15,7 +15,7 @@ test.beforeEach(async ({page, injectProvider}) => {
 test('should connect a wallet', async ({
   page
 }) => {
-  await page.waitForSelector('div:has-text("Logout from Privy")')
+  await page.getByRole('button', {name: "Logout from Privy"}).isVisible()
   await sleep(1000) // used so that you can see the signature on the screen
 })
 
