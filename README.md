@@ -21,7 +21,7 @@ In order to run a vitest unit test, run the commands:
 Then run the following commands:
 ```
 $ npm i
-$ npm run test
+$ npm run test:unit
 ```
 
 In order to run playwright testing, ensure that you have foundry installed.
