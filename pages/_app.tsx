@@ -13,7 +13,7 @@ const configureChainsConfig = configureChains([mainnet, goerli], [publicProvider
 
 const privyConfig: PrivyClientConfig = {
   embeddedWallets: {
-    createOnLogin: 'users-without-wallets',
+    createOnLogin: 'all-users',
     requireUserPasswordOnCreate: true,
     noPromptOnSignature: false,
   },
