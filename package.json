@@ -21,7 +21,7 @@
   "dependencies": {
     "@ethersproject/address": "5.7.0",
     "@next/font": "13.1.1",
-    "@privy-io/react-auth": "1.50.1",
+    "@privy-io/react-auth": "^1.51.1",
     "@privy-io/wagmi-connector": "^0.1.10-beta.1",
     "@types/node": "18.11.18",
     "@types/react": "18.0.26",
