@@ -1,7 +1,7 @@
-import { connectWallet } from 'test/connect-wallet'
-import { signMessage, signTypedData } from 'test/sign-message'
+import { connectWallet } from 'test/playwright/connect-wallet'
+import { signMessage, signTypedData } from 'test/playwright/sign-message'
 import { test } from '../fixture'
-import { sleep } from 'test/sleep'
+import { sleep } from 'test/playwright/sleep'
 import { Web3ProviderBackend } from 'headless-web3-provider'
 
 var wallet: Web3ProviderBackend

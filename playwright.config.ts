@@ -24,7 +24,7 @@ const config: PlaywrightTestConfig = {
   // Timeout per test (slightly higher for local, as it's slower)
   timeout: process.env.CI ? 28 * 1000 : 50 * 1000,
   // Test directory
-  testDir: path.join(__dirname, 'test/tests'),
+  testDir: path.join(__dirname, 'test/playwright/tests'),
   testMatch: '**/*.spec.ts',
   retries: process.env.CI ? 2 : 1,
   // 'github' for GitHub Actions CI to generate annotations, plus a concise 'dot'
