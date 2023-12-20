@@ -4,7 +4,7 @@ import {useWalletClient} from 'wagmi';
 import MonoLabel from './MonoLabel';
 
 const WalletClient = () => {
-  const walletClient = useWalletClient();
+  const {data: walletClient} = useWalletClient();
 
   return (
     <Wrapper title="useWalletClient">
