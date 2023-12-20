@@ -40,7 +40,7 @@ const MonoLabel = ({label}: {label: string}) => {
 export default function Home() {
   // Privy hooks
   const {ready, user, authenticated, login, connectWallet, logout, linkWallet} = usePrivy();
-  const {wallets: connectedWallets} = useWallets();
+  const {wallets} = useWallets();
 
   const {wallet: activeWallet, setActiveWallet} = usePrivyWagmi();
 
@@ -48,13 +48,14 @@ export default function Home() {
   const {address, isConnected, isConnecting, isDisconnected} = useAccount();
   const {disconnect} = useDisconnect();
 
-  const wallets = connectedWallets;
   if (!ready) {
     return;
   }
 
-  console.log('connected wallets: ', wallets);
-  console.log("user's wallets", user?.linkedAccounts);
+  console.log({
+    accounts: user?.linkedAccounts,
+    wallets,
+  });
 
   return (
     <>
@@ -107,13 +108,17 @@ export default function Home() {
               </>
             )}
 
+            {activeWallet && (
+              <>
+                Active wallet:
+                <br />
+                <MonoLabel label={`${activeWallet.walletClientType}: ${activeWallet.address}`} />
+              </>
+            )}
+
             {ready && authenticated && (
               <>
-                <p>
-                  You are logged in with privy.
-                  <br />
-                  Active wallet is <MonoLabel label={activeWallet?.address || ''} />
-                </p>
+                <p className="mt-2">You are logged in with privy.</p>
                 {wallets.map((wallet) => {
                   return (
                     <div
@@ -126,9 +131,7 @@ export default function Home() {
                       <Button
                         cta="Make active"
                         onClick_={() => {
-                          const connectedWallet = connectedWallets.find(
-                            (w) => w.address === wallet.address,
-                          );
+                          const connectedWallet = wallets.find((w) => w.address === wallet.address);
                           if (!connectedWallet) connectWallet();
                           else setActiveWallet(connectedWallet);
                         }}
@@ -137,18 +140,24 @@ export default function Home() {
                     </div>
                   );
                 })}
+                <Button
+                  cta="Use default active wallet"
+                  onClick_={() => {
+                    setActiveWallet(undefined);
+                  }}
+                />
                 <Button onClick_={linkWallet} cta="Link another wallet" />
                 <textarea
-                  value={JSON.stringify(user, null, 2)}
-                  className="mt-2 max-w-4xl rounded-md bg-slate-700 p-4 font-mono text-xs text-slate-50 sm:text-sm"
-                  rows={JSON.stringify(user, null, 2).split('\n').length}
+                  value={JSON.stringify(wallets, null, 2)}
+                  className="mt-2 w-full rounded-md bg-slate-700 p-4 font-mono text-xs text-slate-50 sm:text-sm"
+                  rows={JSON.stringify(wallets, null, 2).split('\n').length}
                   disabled
                 />
                 <br />
                 <textarea
-                  value={JSON.stringify(connectedWallets, null, 2)}
-                  className="mt-2 max-w-4xl rounded-md bg-slate-700 p-4 font-mono text-xs text-slate-50 sm:text-sm"
-                  rows={JSON.stringify(connectedWallets, null, 2).split('\n').length}
+                  value={JSON.stringify(user, null, 2)}
+                  className="mt-2 w-full rounded-md bg-slate-700 p-4 font-mono text-xs text-slate-50 sm:text-sm"
+                  rows={JSON.stringify(user, null, 2).split('\n').length}
                   disabled
                 />
                 <br />
