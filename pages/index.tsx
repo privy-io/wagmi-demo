@@ -49,7 +49,7 @@ export default function Home() {
   const {disconnect} = useDisconnect();
 
   if (!ready) {
-    return;
+    return null;
   }
 
   console.log({
