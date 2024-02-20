@@ -4,6 +4,7 @@ import type {
   TransactionEIP1559,
   TransactionEIP2930,
 } from 'viem';
+import type { GetTransactionData } from 'wagmi/query';
 
 export const shorten = (address: string | undefined) => {
   if (!address) return '';
@@ -13,7 +14,7 @@ export const shorten = (address: string | undefined) => {
 export type AddressString = `0x${string}`;
 
 export const stringifyTransaction = (
-  tx?: TransactionReceipt | TransactionLegacy | TransactionEIP1559 | TransactionEIP2930,
+  tx?: GetTransactionData<any, any> | TransactionReceipt | TransactionLegacy | TransactionEIP1559 | TransactionEIP2930,
 ) => {
   if (!tx) return '{}';
 

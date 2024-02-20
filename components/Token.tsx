@@ -21,7 +21,6 @@ const Token = () => {
 
   const {data, isError, isLoading} = useToken({
     address: contractAddress,
-    enabled: !!contractAddress,
   });
 
   if (!chain) {
@@ -56,10 +55,10 @@ const Token = () => {
     return (
       <Wrapper title="useToken">
         <p>
-          Name: <MonoLabel label={data?.name} />
+          Name: <MonoLabel label={data?.name ?? ''} />
         </p>
         <p>
-          Symbol: <MonoLabel label={data?.symbol} />
+          Symbol: <MonoLabel label={data?.symbol ?? ''} />
         </p>
         <p>
           Address: <MonoLabel label={shorten(data?.address)} />

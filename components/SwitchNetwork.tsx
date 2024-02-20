@@ -11,7 +11,6 @@ const SwitchNetwork = () => {
   const {
     chains,
     error: switchNetworkError,
-    isPending: networkLoading,
     switchChain,
   } = useSwitchChain();
 

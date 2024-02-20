@@ -15,7 +15,7 @@ const WaitForTransaction = () => {
 
   useWatchPendingTransactions({
     chainId: chain?.id,
-    listener: (transaction) => {
+    onTransactions: (transaction) => {
       setTransaction(transaction);
       setWaiting(false);
     },
@@ -24,7 +24,6 @@ const WaitForTransaction = () => {
 
   const {data, isError, isLoading} = useWaitForTransactionReceipt({
     hash: transaction?.[0] as AddressString | undefined,
-    enabled: !waiting && !!transaction?.[0],
   });
 
   if (!chain) {

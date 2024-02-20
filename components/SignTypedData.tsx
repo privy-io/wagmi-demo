@@ -39,20 +39,20 @@ const SignTypedData = () => {
     },
     contents: 'Hello, Bob!',
   } as const;
-  const {data, isError, isLoading, isSuccess, signTypedData} = useSignTypedData({
-    primaryType: 'Mail',
-    domain,
-    types,
-    message,
-  });
+  const {data, isError, isPending, isSuccess, signTypedData} = useSignTypedData();
 
   return (
     <>
       <h2 className="mt-6 text-2xl">useSignTypedMessage</h2>
       <Button
-        disabled={isLoading}
+        disabled={isPending}
         onClick_={() => {
-          signTypedData();
+          signTypedData({
+            primaryType: 'Mail',
+            domain,
+            types,
+            message,
+          });
         }}
         cta="Sign typed data!"
       />

@@ -3,7 +3,6 @@
 import Balance from 'components/Balance';
 import BlockNumber from 'components/BlockNumber';
 import Button from 'components/Button';
-import Contract from 'components/Contract';
 import ContractEvent from 'components/ContractEvent';
 import ContractRead from 'components/ContractRead';
 import ContractReads from 'components/ContractReads';
@@ -26,7 +25,7 @@ import WalletClient from 'components/WalletClient';
 import WatchPendingTransactions from 'components/WatchPendingTransactions';
 import {shorten} from 'lib/utils';
 import Image from 'next/image';
-import {useAccount, useConnect, useDisconnect} from 'wagmi';
+import {useAccount, useDisconnect} from 'wagmi';
 
 import {usePrivy, useWallets} from '@privy-io/react-auth';
 import {useSetActiveWallet} from '@privy-io/wagmi';
@@ -165,7 +164,6 @@ export default function Home() {
                 <ContractReads />
                 <ContractWrite />
                 <ContractEvent />
-                <Contract />
                 <FeeData />
                 <Token />
                 <Transaction />

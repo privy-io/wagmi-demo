@@ -21,7 +21,6 @@ const Transaction = () => {
 
   const {data, isError, isLoading} = useTransaction({
     hash: txnHash,
-    enabled: !!txnHash,
   });
 
   if (!chain) {

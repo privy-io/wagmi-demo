@@ -14,7 +14,7 @@ const WatchPendingTransactions = () => {
 
   useWatchPendingTransactions({
     chainId: chain?.id,
-    listener: (transaction) => {
+    onTransactions: (transaction) => {
       setTransaction(transaction);
       setEnabled(false);
     },

@@ -1,17 +1,16 @@
 'use client';
 
 import Wrapper from 'components/Wrapper';
-import {shorten} from 'lib/utils';
 import {useState} from 'react';
 import {useWatchContractEvent, useAccount} from 'wagmi';
 
 import MonoLabel from './MonoLabel';
+import type {Log} from 'viem';
 
 const ContractEvent = () => {
   const {chain} = useAccount();
-  const [node, setNode] = useState<string | null>(null);
-  const [label, setLabel] = useState<string | null>(null);
-  const [owner, setOwner] = useState<string | null>(null);
+  const [logs, setLogs] = useState<Log[] | null>(null);
+
 
   useWatchContractEvent({
     address: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e', // ENS Mainnet and Goerli Registry
@@ -43,11 +42,8 @@ const ContractEvent = () => {
       },
     ],
     eventName: 'NewOwner',
-    listener(logs: {args: {node: string; label: string; owner: string}}[]) {
-      const {args} = logs.slice(-1)[0];
-      setNode(args.node);
-      setLabel(args.label);
-      setOwner(args.owner);
+    onLogs: (logs: Log[]) => {
+      setLogs(logs);
     },
   });
 
@@ -71,8 +67,8 @@ const ContractEvent = () => {
     <Wrapper title="useWatchContractEvent">
       <p>
         First event:{' '}
-        {node && label && owner ? (
-          <MonoLabel label={`NewOwner(${shorten(node)}, ${shorten(label)}, ${shorten(owner)})`} />
+        {logs && logs.length ? (
+          logs.map((log, i) => <MonoLabel key={i} label={log.logIndex?.toString() ?? ''} />)
         ) : (
           <MonoLabel label="Listening..." />
         )}
