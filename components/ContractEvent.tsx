@@ -1,17 +1,19 @@
+'use client';
+
 import Wrapper from 'components/Wrapper';
 import {shorten} from 'lib/utils';
 import {useState} from 'react';
-import {useContractEvent, useNetwork} from 'wagmi';
+import {useWatchContractEvent, useAccount} from 'wagmi';
 
 import MonoLabel from './MonoLabel';
 
 const ContractEvent = () => {
-  const {chain} = useNetwork();
+  const {chain} = useAccount();
   const [node, setNode] = useState<string | null>(null);
   const [label, setLabel] = useState<string | null>(null);
   const [owner, setOwner] = useState<string | null>(null);
 
-  useContractEvent({
+  useWatchContractEvent({
     address: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e', // ENS Mainnet and Goerli Registry
     abi: [
       {
@@ -51,7 +53,7 @@ const ContractEvent = () => {
 
   if (!chain) {
     return (
-      <Wrapper title="useContractEvent">
+      <Wrapper title="useWatchContractEvent">
         <p>Loading...</p>
       </Wrapper>
     );
@@ -59,14 +61,14 @@ const ContractEvent = () => {
 
   if (chain.id !== 1 && chain.id !== 5) {
     return (
-      <Wrapper title="useContractEvent">
+      <Wrapper title="useWatchContractEvent">
         <p>Unsupported network. Please switch to Goerli or Mainnet.</p>
       </Wrapper>
     );
   }
 
   return (
-    <Wrapper title="useContractEvent">
+    <Wrapper title="useWatchContractEvent">
       <p>
         First event:{' '}
         {node && label && owner ? (

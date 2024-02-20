@@ -1,3 +1,5 @@
+'use client';
+
 import {useAccount, useBalance} from 'wagmi';
 
 const Balance = () => {

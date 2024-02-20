@@ -1,6 +1,5 @@
-import path from 'path'
-import { defineConfig, devices, type PlaywrightTestConfig } from '@playwright/test'
-
+import {defineConfig, devices, type PlaywrightTestConfig} from '@playwright/test';
+import path from 'path';
 
 // Locally we run the app in dev mode
 const runPlaywrightServer = {
@@ -8,15 +7,16 @@ const runPlaywrightServer = {
   timeout: 240 * 1000,
   reuseExistingServer: false,
   url: 'http://127.0.0.1:8080',
-}
+};
 
 const runAnvilServer = {
-  command: 'source .env.local && anvil --fork-url https://eth-goerli.g.alchemy.com/v2/$NEXT_PUBLIC_ALCHEMY_API_KEY --chain-id 5',
+  command:
+    'source .env.local && anvil --fork-url https://eth-goerli.g.alchemy.com/v2/$NEXT_PUBLIC_ALCHEMY_API_KEY --chain-id 5',
   timeout: 120 * 1000,
   // Don't reuse anvil between test runs as the wallet state is persisted
   reuseExistingServer: false,
   url: 'http://127.0.0.1:8545',
-}
+};
 
 // Reference: https://playwright.dev/docs/test-configuration
 const config: PlaywrightTestConfig = {
@@ -29,9 +29,7 @@ const config: PlaywrightTestConfig = {
   retries: process.env.CI ? 2 : 1,
   // 'github' for GitHub Actions CI to generate annotations, plus a concise 'dot'
   // default 'list' when running locally
-  reporter: process.env.CI
-    ? [['html', { outputFolder: 'playwright-report' }], ['list']]
-    : 'list',
+  reporter: process.env.CI ? [['html', {outputFolder: 'playwright-report'}], ['list']] : 'list',
   // fullyParallel: true,
   workers: 2,
 
@@ -52,7 +50,7 @@ const config: PlaywrightTestConfig = {
   projects: [
     {
       name: 'goerli',
-      use: { ...devices['Desktop Chrome'] },
+      use: {...devices['Desktop Chrome']},
     },
   ],
 
@@ -60,8 +58,7 @@ const config: PlaywrightTestConfig = {
   // through playwright, and run anvil manually for debugging
   // webServer: [runPlaywrightServer],
   webServer: [runAnvilServer, runPlaywrightServer],
-}
+};
 
 // config.timeout = 240 * 1000
-export default defineConfig(config)
-
+export default defineConfig(config);

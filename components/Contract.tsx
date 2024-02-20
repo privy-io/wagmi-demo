@@ -1,7 +1,9 @@
+'use client';
+
 import Wrapper from 'components/Wrapper';
 import {shorten} from 'lib/utils';
 import {useState} from 'react';
-import {useContractEvent} from 'wagmi';
+import {useWatchContractEvent} from 'wagmi';
 
 import MonoLabel from './MonoLabel';
 
@@ -10,7 +12,7 @@ const Contract = () => {
   const [label, setLabel] = useState<string | null>(null);
   const [owner, setOwner] = useState<string | null>(null);
 
-  useContractEvent({
+  useWatchContractEvent({
     address: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e', // ENS Mainnet and Goerli Registry
     abi: [
       {

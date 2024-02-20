@@ -1,3 +1,5 @@
+'use client';
+
 import Wrapper from 'components/Wrapper';
 import {useFeeData} from 'wagmi';
 

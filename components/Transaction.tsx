@@ -1,11 +1,13 @@
+'use client';
+
 import Wrapper from 'components/Wrapper';
 import {shorten, type AddressString, stringifyTransaction} from 'lib/utils';
-import {useNetwork, useTransaction} from 'wagmi';
+import {useAccount, useTransaction} from 'wagmi';
 
 import SmallTextArea from './SmallTextArea';
 
 const Transaction = () => {
-  const {chain} = useNetwork();
+  const {chain} = useAccount();
 
   let txnHash: AddressString | undefined;
   switch (chain?.id) {

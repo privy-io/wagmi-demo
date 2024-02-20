@@ -3,6 +3,7 @@ NextJS app that uses both WAGMI + Privy, connecting them with [@privy-io/wagmi-c
 ## Make sure to use relative-deps
 
 Your package.json should have the following:
+
 ```
   "relativeDependencies": {
     "@privy-io/react-auth": "../react-auth",
@@ -11,6 +12,7 @@ Your package.json should have the following:
 ```
 
 You can get to this point by running:
+
 ```
 $ npx relative-deps add ../path/to/wagmi-connector
 $ npx relative-deps add ../path/to/react-auth
@@ -19,19 +21,22 @@ $ foundryup
 
 In order to run a vitest unit test, run the commands:
 Then run the following commands:
+
 ```
 $ npm i
 $ npm run test:unit
 ```
 
 In order to run playwright testing, ensure that you have foundry installed.
+
 ```
 $ curl -L https://foundry.paradigm.xyz | bash
 $ source /Users/{your-account}/.zshenv
-$ 
+$
 ```
 
 Then run the following commands:
+
 ```
 $ npm i
 $ npm run test:e2e

@@ -1,13 +1,15 @@
+'use client';
+
 import Wrapper from 'components/Wrapper';
 import {type AddressString, stringifyTransaction} from 'lib/utils';
 import {useState} from 'react';
 import type {OnTransactionsParameter} from 'viem';
-import {useNetwork, useWaitForTransaction, useWatchPendingTransactions} from 'wagmi';
+import {useAccount, useWaitForTransactionReceipt, useWatchPendingTransactions} from 'wagmi';
 
 import SmallTextArea from './SmallTextArea';
 
 const WaitForTransaction = () => {
-  const {chain} = useNetwork();
+  const {chain} = useAccount();
   const [waiting, setWaiting] = useState(true);
   const [transaction, setTransaction] = useState<OnTransactionsParameter>();
 
@@ -20,14 +22,14 @@ const WaitForTransaction = () => {
     enabled: waiting,
   });
 
-  const {data, isError, isLoading} = useWaitForTransaction({
+  const {data, isError, isLoading} = useWaitForTransactionReceipt({
     hash: transaction?.[0] as AddressString | undefined,
     enabled: !waiting && !!transaction?.[0],
   });
 
   if (!chain) {
     return (
-      <Wrapper title="useWaitForTransaction">
+      <Wrapper title="useWaitForTransactionReceipt">
         <p>Loading...</p>
       </Wrapper>
     );
@@ -35,19 +37,19 @@ const WaitForTransaction = () => {
 
   if (waiting || isLoading) {
     return (
-      <Wrapper title="useWaitForTransaction">
+      <Wrapper title="useWaitForTransactionReceipt">
         <p>Waiting for transaction to settle...</p>
       </Wrapper>
     );
   } else if (isError) {
     return (
-      <Wrapper title="useWaitForTransaction">
+      <Wrapper title="useWaitForTransactionReceipt">
         <p>Error waiting for transaction to settle...</p>
       </Wrapper>
     );
   } else {
     return (
-      <Wrapper title="useWaitForTransaction">
+      <Wrapper title="useWaitForTransactionReceipt">
         <p className="mb-2">First settled transaction:</p>
         <SmallTextArea content={stringifyTransaction(data)} />
       </Wrapper>

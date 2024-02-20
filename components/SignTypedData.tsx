@@ -1,9 +1,11 @@
+'use client';
+
 import Button from 'components/Button';
 import {shorten} from 'lib/utils';
-import {useNetwork, useSignTypedData} from 'wagmi';
+import {useAccount, useSignTypedData} from 'wagmi';
 
 const SignTypedData = () => {
-  const {chain} = useNetwork();
+  const {chain} = useAccount();
 
   // All properties on a domain are optional
   const domain = {

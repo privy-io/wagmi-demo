@@ -1,11 +1,13 @@
+'use client';
+
 import Wrapper from 'components/Wrapper';
 import {shorten, type AddressString} from 'lib/utils';
-import {useNetwork, useToken} from 'wagmi';
+import {useAccount, useToken} from 'wagmi';
 
 import MonoLabel from './MonoLabel';
 
 const Token = () => {
-  const {chain} = useNetwork();
+  const {chain} = useAccount();
 
   let contractAddress: AddressString | undefined;
   switch (chain?.id) {

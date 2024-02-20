@@ -1,3 +1,5 @@
+'use client';
+
 import Button from 'components/Button';
 import {shorten} from 'lib/utils';
 import {useAccount, useSignMessage} from 'wagmi';

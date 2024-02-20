@@ -1,11 +1,14 @@
+'use client';
+
 import Wrapper from 'components/Wrapper';
 import {shorten, type AddressString} from 'lib/utils';
-import {erc721ABI, useContractReads, useNetwork} from 'wagmi';
+import {erc721Abi} from 'viem';
+import {useContractReads, useAccount} from 'wagmi';
 
 import MonoLabel from './MonoLabel';
 
 const ContractReads = () => {
-  const {chain} = useNetwork();
+  const {chain} = useAccount();
 
   let contractAddress: AddressString | undefined;
   switch (chain?.id) {
@@ -24,12 +27,11 @@ const ContractReads = () => {
     contracts: tokenIds.map((tokenId) => {
       return {
         address: contractAddress,
-        abi: erc721ABI,
+        abi: erc721Abi,
         functionName: 'ownerOf',
         args: [BigInt(tokenId)],
       };
     }),
-    enabled: !!contractAddress,
   });
 
   if (!chain) {

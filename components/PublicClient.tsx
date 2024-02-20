@@ -1,3 +1,5 @@
+'use client';
+
 import Wrapper from 'components/Wrapper';
 import {usePublicClient} from 'wagmi';
 

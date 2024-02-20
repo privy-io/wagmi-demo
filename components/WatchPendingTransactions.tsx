@@ -1,12 +1,14 @@
+'use client';
+
 import Wrapper from 'components/Wrapper';
 import {useState} from 'react';
 import type {OnTransactionsParameter} from 'viem';
-import {useNetwork, useWatchPendingTransactions} from 'wagmi';
+import {useAccount, useWatchPendingTransactions} from 'wagmi';
 
 import SmallTextArea from './SmallTextArea';
 
 const WatchPendingTransactions = () => {
-  const {chain} = useNetwork();
+  const {chain} = useAccount();
   const [enabled, setEnabled] = useState(true);
   const [transaction, setTransaction] = useState<OnTransactionsParameter>();
 

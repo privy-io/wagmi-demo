@@ -1,3 +1,5 @@
+'use client';
+
 import MonoLabel from 'components/MonoLabel';
 import {useAccount, useEnsName} from 'wagmi';
 
