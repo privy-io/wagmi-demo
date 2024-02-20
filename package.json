@@ -19,8 +19,8 @@
   },
   "dependencies": {
     "@ethersproject/address": "5.7.0",
-    "@privy-io/react-auth": "1.56.2-beta-20240219234540",
-    "@privy-io/wagmi": "0.1.0-beta-20240219234540",
+    "@privy-io/react-auth": "^1.56.2",
+    "@privy-io/wagmi": "^0.1.0",
     "@tailwindcss/forms": "^0.5.7",
     "@tanstack/react-query": "^5",
     "@types/node": "18.11.18",
