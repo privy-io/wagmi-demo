@@ -1,17 +1,18 @@
+'use client';
+
 import Wrapper from 'components/Wrapper';
-import {shorten} from 'lib/utils';
 import {useState} from 'react';
-import {useContractEvent, useNetwork} from 'wagmi';
+import {useWatchContractEvent, useAccount} from 'wagmi';
 
 import MonoLabel from './MonoLabel';
+import type {Log} from 'viem';
 
 const ContractEvent = () => {
-  const {chain} = useNetwork();
-  const [node, setNode] = useState<string | null>(null);
-  const [label, setLabel] = useState<string | null>(null);
-  const [owner, setOwner] = useState<string | null>(null);
+  const {chain} = useAccount();
+  const [logs, setLogs] = useState<Log[] | null>(null);
 
-  useContractEvent({
+
+  useWatchContractEvent({
     address: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e', // ENS Mainnet and Goerli Registry
     abi: [
       {
@@ -41,17 +42,14 @@ const ContractEvent = () => {
       },
     ],
     eventName: 'NewOwner',
-    listener(logs: {args: {node: string; label: string; owner: string}}[]) {
-      const {args} = logs.slice(-1)[0];
-      setNode(args.node);
-      setLabel(args.label);
-      setOwner(args.owner);
+    onLogs: (logs: Log[]) => {
+      setLogs(logs);
     },
   });
 
   if (!chain) {
     return (
-      <Wrapper title="useContractEvent">
+      <Wrapper title="useWatchContractEvent">
         <p>Loading...</p>
       </Wrapper>
     );
@@ -59,18 +57,18 @@ const ContractEvent = () => {
 
   if (chain.id !== 1 && chain.id !== 5) {
     return (
-      <Wrapper title="useContractEvent">
+      <Wrapper title="useWatchContractEvent">
         <p>Unsupported network. Please switch to Goerli or Mainnet.</p>
       </Wrapper>
     );
   }
 
   return (
-    <Wrapper title="useContractEvent">
+    <Wrapper title="useWatchContractEvent">
       <p>
         First event:{' '}
-        {node && label && owner ? (
-          <MonoLabel label={`NewOwner(${shorten(node)}, ${shorten(label)}, ${shorten(owner)})`} />
+        {logs && logs.length ? (
+          logs.map((log, i) => <MonoLabel key={i} label={log.logIndex?.toString() ?? ''} />)
         ) : (
           <MonoLabel label="Listening..." />
         )}

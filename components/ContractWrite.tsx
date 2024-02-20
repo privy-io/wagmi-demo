@@ -1,6 +1,8 @@
+'use client';
+
 import Wrapper from 'components/Wrapper';
 import {shorten, type AddressString} from 'lib/utils';
-import {useContractWrite, useNetwork, usePrepareContractWrite} from 'wagmi';
+import {useAccount, useSimulateContract, useWriteContract} from 'wagmi';
 
 import Button from './Button';
 import MonoLabel from './MonoLabel';
@@ -106,24 +108,17 @@ const wagmigotchiABI = [
 ];
 
 const ContractWrite = () => {
-  const {chain} = useNetwork();
+  const {chain} = useAccount();
 
-  let contractAddress: AddressString | undefined;
-  switch (chain?.id) {
-    case 1:
-    case 5:
-      contractAddress = '0xeCB504D39723b0be0e3a9Aa33D646642D1051EE1'; // WAGMIGOTCHI on Mainnet and Goerli
-      break;
-  }
+  const contractAddress: AddressString | undefined = '0xeCB504D39723b0be0e3a9Aa33D646642D1051EE1'; // WAGMIGOTCHI on Mainnet and Goerli
 
-  const {config} = usePrepareContractWrite({
+  const {data: simulatedContract} = useSimulateContract({
     address: contractAddress,
     abi: wagmigotchiABI,
     functionName: 'feed',
-    enabled: !!contractAddress,
   });
 
-  const {data, isLoading, isError, write} = useContractWrite(config);
+  const {data, isPending, isError, writeContract} = useWriteContract();
 
   if (!chain) {
     return (
@@ -148,11 +143,17 @@ const ContractWrite = () => {
       </div>
       {data && !isError && (
         <p>
-          Transaction hash: <MonoLabel label={shorten(data.hash)} />
+          Transaction hash: <MonoLabel label={shorten(data)} />
         </p>
       )}
       {isError && <p>Error sending transaction.</p>}
-      <Button disabled={isLoading} onClick_={() => write?.()} cta="Feed Wagmigotchi" />
+      {simulatedContract && (
+        <Button
+          disabled={isPending}
+          onClick_={() => writeContract?.(simulatedContract.request)}
+          cta="Feed Wagmigotchi"
+        />
+      )}
     </Wrapper>
   );
 };

@@ -1,9 +1,9 @@
+'use client';
+
 import Balance from 'components/Balance';
 import BlockNumber from 'components/BlockNumber';
 import Button from 'components/Button';
-import Contract from 'components/Contract';
 import ContractEvent from 'components/ContractEvent';
-import ContractInfiniteReads from 'components/ContractInfiniteReads';
 import ContractRead from 'components/ContractRead';
 import ContractReads from 'components/ContractReads';
 import ContractWrite from 'components/ContractWrite';
@@ -24,12 +24,11 @@ import WaitForTransaction from 'components/WaitForTransaction';
 import WalletClient from 'components/WalletClient';
 import WatchPendingTransactions from 'components/WatchPendingTransactions';
 import {shorten} from 'lib/utils';
-import Head from 'next/head';
 import Image from 'next/image';
 import {useAccount, useDisconnect} from 'wagmi';
 
 import {usePrivy, useWallets} from '@privy-io/react-auth';
-import {usePrivyWagmi} from '@privy-io/wagmi-connector';
+import {useSetActiveWallet} from '@privy-io/wagmi';
 
 import wagmiPrivyLogo from '../public/wagmi_privy_logo.png';
 
@@ -41,30 +40,17 @@ export default function Home() {
   // Privy hooks
   const {ready, user, authenticated, login, connectWallet, logout, linkWallet} = usePrivy();
   const {wallets} = useWallets();
-
-  const {wallet: activeWallet, setActiveWallet} = usePrivyWagmi();
-
   // WAGMI hooks
   const {address, isConnected, isConnecting, isDisconnected} = useAccount();
   const {disconnect} = useDisconnect();
+  const {setActiveWallet} = useSetActiveWallet();
 
   if (!ready) {
     return null;
   }
 
-  console.log({
-    accounts: user?.linkedAccounts,
-    wallets,
-  });
-
   return (
     <>
-      <Head>
-        <title>Privy 🤝 WAGMI</title>
-        <meta name="description" content="A demo app showing how to use Privy with WAGMI.sh" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <main className="min-h-screen bg-slate-200 p-4 text-slate-800">
         <Image
           className="mx-auto rounded-lg"
@@ -107,15 +93,6 @@ export default function Home() {
                 </div>
               </>
             )}
-
-            {activeWallet && (
-              <>
-                Active wallet:
-                <br />
-                <MonoLabel label={`${activeWallet.walletClientType}: ${activeWallet.address}`} />
-              </>
-            )}
-
             {ready && authenticated && (
               <>
                 <p className="mt-2">You are logged in with privy.</p>
@@ -131,21 +108,13 @@ export default function Home() {
                       <Button
                         cta="Make active"
                         onClick_={() => {
-                          const connectedWallet = wallets.find((w) => w.address === wallet.address);
-                          if (!connectedWallet) connectWallet();
-                          else setActiveWallet(connectedWallet);
+                          setActiveWallet(wallet);
                         }}
-                        disabled={wallet.address === activeWallet?.address}
                       />
                     </div>
                   );
                 })}
-                <Button
-                  cta="Use default active wallet"
-                  onClick_={() => {
-                    setActiveWallet(undefined);
-                  }}
-                />
+                <Button onClick_={connectWallet} cta="Connect another wallet" />
                 <Button onClick_={linkWallet} cta="Link another wallet" />
                 <textarea
                   value={JSON.stringify(wallets, null, 2)}
@@ -193,10 +162,8 @@ export default function Home() {
                 <SendTransaction />
                 <ContractRead />
                 <ContractReads />
-                <ContractInfiniteReads />
                 <ContractWrite />
                 <ContractEvent />
-                <Contract />
                 <FeeData />
                 <Token />
                 <Transaction />

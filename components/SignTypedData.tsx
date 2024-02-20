@@ -1,9 +1,11 @@
+'use client';
+
 import Button from 'components/Button';
 import {shorten} from 'lib/utils';
-import {useNetwork, useSignTypedData} from 'wagmi';
+import {useAccount, useSignTypedData} from 'wagmi';
 
 const SignTypedData = () => {
-  const {chain} = useNetwork();
+  const {chain} = useAccount();
 
   // All properties on a domain are optional
   const domain = {
@@ -37,20 +39,20 @@ const SignTypedData = () => {
     },
     contents: 'Hello, Bob!',
   } as const;
-  const {data, isError, isLoading, isSuccess, signTypedData} = useSignTypedData({
-    primaryType: 'Mail',
-    domain,
-    types,
-    message,
-  });
+  const {data, isError, isPending, isSuccess, signTypedData} = useSignTypedData();
 
   return (
     <>
       <h2 className="mt-6 text-2xl">useSignTypedMessage</h2>
       <Button
-        disabled={isLoading}
+        disabled={isPending}
         onClick_={() => {
-          signTypedData();
+          signTypedData({
+            primaryType: 'Mail',
+            domain,
+            types,
+            message,
+          });
         }}
         cta="Sign typed data!"
       />

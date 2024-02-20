@@ -1,3 +1,5 @@
+'use client';
+
 type buttonProps = {
   cta: string;
   onClick_: () => void;

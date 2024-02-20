@@ -1,3 +1,5 @@
+'use client';
+
 import SmallTextArea from 'components/SmallTextArea';
 import Wrapper from 'components/Wrapper';
 import {useEnsResolver} from 'wagmi';

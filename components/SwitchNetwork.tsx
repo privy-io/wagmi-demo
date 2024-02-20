@@ -1,33 +1,22 @@
+'use client';
+
 import Button from 'components/Button';
 import MonoLabel from 'components/MonoLabel';
-import {useNetwork} from 'wagmi';
-
-import {useSwitchNetwork} from '@privy-io/wagmi-connector';
+import {useAccount} from 'wagmi';
+import {useSwitchChain} from 'wagmi';
 
 const SwitchNetwork = () => {
-  const {chain} = useNetwork();
+  const {chain} = useAccount();
 
   const {
     chains,
     error: switchNetworkError,
-    isLoading: networkLoading,
-    pendingChainId,
-    switchNetwork,
-  } = useSwitchNetwork({
-    onError(error) {
-      console.log('Switch network error', error);
-    },
-    onMutate(args) {
-      console.log('Switch network mutated:', args);
-    },
-    onSettled(data, error) {
-      console.log('Switch network settled', {data, error});
-    },
-  });
+    switchChain,
+  } = useSwitchChain();
 
   return (
     <>
-      <h2 className="mt-6 text-2xl">useNetwork (chain switching)</h2>
+      <h2 className="mt-6 text-2xl">useAccount (chain switching)</h2>
       {chain && (
         <p>
           Connected to <MonoLabel label={chain.name} />
@@ -37,10 +26,10 @@ const SwitchNetwork = () => {
         <p>Switch chains: </p>
         {chains.map((x) => (
           <Button
-            disabled={!switchNetwork || x.id === chain?.id}
+            disabled={!switchChain || x.id === chain?.id}
             key={x.id}
-            onClick_={() => switchNetwork?.(x.id)}
-            cta={networkLoading && pendingChainId === x.id ? ' (switching)' : x.name}
+            onClick_={() => switchChain?.({chainId: x.id})}
+            cta={x.name}
           />
         ))}
         {switchNetworkError && (

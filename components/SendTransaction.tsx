@@ -1,15 +1,17 @@
+'use client';
+
 import Button from 'components/Button';
 import Wrapper from 'components/Wrapper';
 import {parseEther} from 'viem';
-import {usePrepareSendTransaction, useSendTransaction} from 'wagmi';
+import {useSendTransaction} from 'wagmi';
 
 const SendTransaction = () => {
-  const {config} = usePrepareSendTransaction({
-    to: '0xF2A919977c6dE88dd8ed90feAADFcC5d65D66038',
+  const transactionRequest = {
+    to: '0xF2A919977c6dE88dd8ed90feAADFcC5d65D66038' as `0x${string}`,
     value: parseEther('0.001'),
-  });
+  };
 
-  const {data, isLoading, isSuccess, sendTransaction} = useSendTransaction(config);
+  const {data, isPending, isSuccess, sendTransaction} = useSendTransaction();
 
   return (
     <Wrapper title="useSendTransaction">
@@ -17,11 +19,11 @@ const SendTransaction = () => {
         We recommend doing this on goerli.
       </div>
       <Button
+        cta="Send to privy.io.eth"
+        onClick_={() => sendTransaction(transactionRequest)}
         disabled={!sendTransaction}
-        onClick_={() => sendTransaction?.()}
-        cta="Send to privyio.eth"
       />
-      {isLoading && <div>Check wallet</div>}
+      {isPending && <div>Check wallet</div>}
       {isSuccess && <div>Transaction: {JSON.stringify(data)}</div>}
     </Wrapper>
   );

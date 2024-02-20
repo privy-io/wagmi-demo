@@ -1,3 +1,5 @@
+'use client';
+
 import Button from 'components/Button';
 import {shorten} from 'lib/utils';
 import {useAccount, useSignMessage} from 'wagmi';
@@ -7,16 +9,18 @@ import {usePrivy} from '@privy-io/react-auth';
 const SignMessage = () => {
   const {user} = usePrivy();
   const {address} = useAccount();
-  const {data, isLoading, isSuccess, isError, signMessage} = useSignMessage({
-    onSuccess() {
-      console.log('Sign Message Success');
-    },
+  const {data, isPending, isSuccess, isError, signMessage} = useSignMessage({
+    mutation: {
+      onSuccess: () => {
+        console.log('Sign Message Success');
+      },
+    }
   });
   return (
     <>
       <h2 className="mt-6 text-2xl">useSignMessage</h2>
       <Button
-        disabled={isLoading}
+        disabled={isPending}
         onClick_={() => {
           signMessage({
             message: `Signing with WAGMI\nWAGMI address: ${shorten(

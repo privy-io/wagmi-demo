@@ -1,3 +1,5 @@
+'use client';
+
 import MonoLabel from 'components/MonoLabel';
 import Wrapper from 'components/Wrapper';
 import {shorten} from 'lib/utils';

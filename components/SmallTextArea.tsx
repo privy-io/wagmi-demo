@@ -1,3 +1,5 @@
+'use client';
+
 const SmallTextArea = ({content}: {content: string}) => {
   return (
     <textarea

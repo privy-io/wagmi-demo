@@ -1,3 +1,5 @@
+'use client';
+
 import Wrapper from 'components/Wrapper';
 import {useEffect, useState} from 'react';
 import {usePublicClient} from 'wagmi';
