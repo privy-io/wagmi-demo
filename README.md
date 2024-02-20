@@ -1,43 +1,38 @@
-NextJS app that uses both WAGMI + Privy, connecting them with [@privy-io/wagmi-connector](https://www.npmjs.com/package/@privy-io/wagmi-connector/v/0.0.1-beta.7?activeTab=readme).
+# Privy x Wagmi Demo
 
-## Make sure to use relative-deps
+This is a demo NextJS app that uses both [`wagmi`](https://wagmi.sh/) and [Privy](https://www.privy.io/), connecting them with the [`@privy-io/wagmi`](https://www.npmjs.com/package/@privy-io/wagmi) package. 
 
-Your package.json should have the following:
+To try the demo, go to https://wagmi-app.vercel.app/ and login with Privy. As part of login, you'll either connect an external wallet (e.g. MetaMask) or create an embedded wallet associated with your login method. Once connected, click the buttons in the right sidebar to invoke various [`wagmi`](https://wagmi.sh/) hooks, like `useSignMessage`, to interface with your connected wallet. 
 
-```
-  "relativeDependencies": {
-    "@privy-io/react-auth": "../react-auth",
-    "@privy-io/wagmi-connector": "../wagmi-connector"
-  }
-```
+**Check out our [`wagmi` integration guide](https://docs.privy.io/guide/guides/wagmi) for more guidance!**
 
-You can get to this point by running:
+## Setup
 
-```
-$ npx relative-deps add ../path/to/wagmi-connector
-$ npx relative-deps add ../path/to/react-auth
-$ foundryup
+1. Fork this repository, clone it, and open it in your terminal.
+```sh
+git clone https://github.com/<your-github-handle>/wagmi-demo
 ```
 
-In order to run a vitest unit test, run the commands:
-Then run the following commands:
-
-```
-$ npm i
-$ npm run test:unit
+2. Install the necessary dependencies with `npm`.
+```sh
+npm i 
 ```
 
-In order to run playwright testing, ensure that you have foundry installed.
+3. Initialize your environment variables by copying the `.env.example` file to an `.env.local` file. Then, in `.env.local`, paste your **Privy App ID** from the [Privy console](https://console.privy.io) and an [**Alchemy API Key**](https://www.alchemy.com/). 
+```sh
+# In your terminal, create .env.local from .env.local.example
+cp .env.local.example .env.local
 
-```
-$ curl -L https://foundry.paradigm.xyz | bash
-$ source /Users/{your-account}/.zshenv
-$
+# Add your Privy App ID to .env.local
+NEXT_PUBLIC_PRIVY_APP_ID=<your-privy-app-id>
+NEXT_PUBLIC_ALCHEMY_API_KEY=<your-alchemy-api-key>
 ```
 
-Then run the following commands:
+## Building locally
 
-```
-$ npm i
-$ npm run test:e2e
-```
+In your project directory, run `npm run dev`. You can now visit http://localhost:4000 to see your app and login with Privy!
+
+## Check out:
+- `app/page.tsx` for how to connect external wallets and create embedded wallets using Privy
+- `components/providers.tsx` for how to wrap your app with the `PrivyProvider`, `WagmiProvider`, and `QueryClientProvider`
+- `components/*.tsx` for examples of calling `wagmi` hooks. The components are named after hook they call; for example, `components/SignMessage.tsx` calls the `useSignMessage` hook. 
