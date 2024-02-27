@@ -1,8 +1,8 @@
 'use client';
 
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
-import {http} from 'viem';
-import {mainnet, sepolia} from 'viem/chains';
+import {http} from 'wagmi';
+import {mainnet, sepolia} from 'wagmi/chains';
 
 import type {PrivyClientConfig} from '@privy-io/react-auth';
 import {PrivyProvider} from '@privy-io/react-auth';
@@ -34,10 +34,9 @@ const privyConfig: PrivyClientConfig = {
 export default function Providers({children}: {children: React.ReactNode}) {
   return (
     <PrivyProvider
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      apiUrl={process.env.NEXT_PUBLIC_PRIVY_AUTH_URL as string}
       appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string}
+      // @ts-ignore
+      apiUrl={process.env.NEXT_PUBLIC_PRIVY_AUTH_URL}
       config={privyConfig}
     >
       <QueryClientProvider client={queryClient}>
