@@ -16,7 +16,6 @@ export const wagmiConfig = createConfig({
     [mainnet.id]: http(),
     [sepolia.id]: http(),
   },
-  multiInjectedProviderDiscovery: false,
 });
 
 const privyConfig: PrivyClientConfig = {
