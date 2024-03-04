@@ -40,6 +40,7 @@ export default function Home() {
   // Privy hooks
   const {ready, user, authenticated, login, connectWallet, logout, linkWallet} = usePrivy();
   const {wallets, ready: walletsReady} = useWallets();
+
   // WAGMI hooks
   const {address, isConnected, isConnecting, isDisconnected} = useAccount();
   const {disconnect} = useDisconnect();
