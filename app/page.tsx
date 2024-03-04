@@ -39,7 +39,7 @@ const MonoLabel = ({label}: {label: string}) => {
 export default function Home() {
   // Privy hooks
   const {ready, user, authenticated, login, connectWallet, logout, linkWallet} = usePrivy();
-  const {wallets} = useWallets();
+  const {wallets, ready: walletsReady} = useWallets();
   // WAGMI hooks
   const {address, isConnected, isConnecting, isDisconnected} = useAccount();
   const {disconnect} = useDisconnect();
@@ -94,24 +94,25 @@ export default function Home() {
               </>
             )}
 
-            {wallets.map((wallet) => {
-              return (
-                <div
-                  key={wallet.address}
-                  className="flex min-w-full flex-row flex-wrap items-center justify-between gap-2 bg-slate-50 p-4"
-                >
-                  <div>
-                    <MonoLabel label={shorten(wallet.address)} />
+            {walletsReady &&
+              wallets.map((wallet) => {
+                return (
+                  <div
+                    key={wallet.address}
+                    className="flex min-w-full flex-row flex-wrap items-center justify-between gap-2 bg-slate-50 p-4"
+                  >
+                    <div>
+                      <MonoLabel label={shorten(wallet.address)} />
+                    </div>
+                    <Button
+                      cta="Make active"
+                      onClick_={() => {
+                        setActiveWallet(wallet);
+                      }}
+                    />
                   </div>
-                  <Button
-                    cta="Make active"
-                    onClick_={() => {
-                      setActiveWallet(wallet);
-                    }}
-                  />
-                </div>
-              );
-            })}
+                );
+              })}
 
             {ready && authenticated && (
               <>
