@@ -5,7 +5,7 @@ import Wrapper from 'components/Wrapper';
 import {parseEther} from 'viem';
 import type {Config} from 'wagmi';
 import {useSendTransaction} from 'wagmi';
-import {SendTransactionVariables} from 'wagmi/query';
+import type {SendTransactionVariables} from 'wagmi/query';
 
 const SendTransaction = () => {
   const transactionRequest: SendTransactionVariables<Config, number> = {
