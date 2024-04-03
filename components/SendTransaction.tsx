@@ -3,7 +3,7 @@
 import Button from 'components/Button';
 import Wrapper from 'components/Wrapper';
 import {parseEther} from 'viem';
-import {Config, useSendTransaction} from 'wagmi';
+import {type Config, useSendTransaction} from 'wagmi';
 import {SendTransactionVariables} from 'wagmi/query';
 
 const SendTransaction = () => {
