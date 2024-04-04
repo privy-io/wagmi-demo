@@ -3,12 +3,15 @@
 import Button from 'components/Button';
 import Wrapper from 'components/Wrapper';
 import {parseEther} from 'viem';
+import type {Config} from 'wagmi';
 import {useSendTransaction} from 'wagmi';
+import type {SendTransactionVariables} from 'wagmi/query';
 
 const SendTransaction = () => {
-  const transactionRequest = {
+  const transactionRequest: SendTransactionVariables<Config, number> = {
     to: '0xF2A919977c6dE88dd8ed90feAADFcC5d65D66038' as `0x${string}`,
     value: parseEther('0.001'),
+    type: 'eip1559',
   };
 
   const {data, isPending, isSuccess, sendTransaction} = useSendTransaction();
