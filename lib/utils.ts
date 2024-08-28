@@ -4,7 +4,7 @@ import type {
   TransactionEIP1559,
   TransactionEIP2930,
 } from 'viem';
-import type { GetTransactionData } from 'wagmi/query';
+import type {GetTransactionData} from 'wagmi/query';
 
 export const shorten = (address: string | undefined) => {
   if (!address) return '';
@@ -14,13 +14,21 @@ export const shorten = (address: string | undefined) => {
 export type AddressString = `0x${string}`;
 
 export const stringifyTransaction = (
-  tx?: GetTransactionData<any, any> | TransactionReceipt | TransactionLegacy | TransactionEIP1559 | TransactionEIP2930,
+  tx?:
+    | GetTransactionData<any, any>
+    | TransactionReceipt
+    | TransactionLegacy
+    | TransactionEIP1559
+    | TransactionEIP2930,
 ) => {
   if (!tx) return '{}';
 
   return JSON.stringify(
     Object.fromEntries(
-      Object.entries(tx).map(([key, val]) => [key, typeof val === 'bigint' ? val.toString() : val]),
+      Object.entries(tx).map(([key, val]) => [
+        key,
+        typeof val === 'bigint' ? val.toString() : key === 'logs' ? `[${val.length} logs]` : val,
+      ]),
     ),
     null,
     2,

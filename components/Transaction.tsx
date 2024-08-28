@@ -14,8 +14,8 @@ const Transaction = () => {
     case 1:
       txnHash = '0x6ff0860e202c61189cb2a3a38286bffd694acbc50577df6cb5a7ff40e21ea074'; // vitalik.eth First Txn on Mainnet
       break;
-    case 5:
-      txnHash = '0x2a7cfe34807c88c2f50c3fcc18d6eec8b7c999a51e0e591e359de59fe68408d8'; // vitalik.eth First Txn on Goerli
+    case 11155111:
+      txnHash = '0x486c6e80719147ade6574db437d6623507ac7f2ca533088b044514c5cada7358'; // vitalik.eth First Txn on Sepolia
       break;
   }
 
@@ -34,7 +34,7 @@ const Transaction = () => {
   if (!txnHash) {
     return (
       <Wrapper title="useTransaction">
-        <p>Unsupported network. Please switch to Goerli or Mainnet.</p>
+        <p>Unsupported network. Please switch to Sepolia or Mainnet.</p>
       </Wrapper>
     );
   }

@@ -12,10 +12,12 @@ const Token = () => {
   let contractAddress: AddressString | undefined;
   switch (chain?.id) {
     case 1:
+      // https://developers.circle.com/stablecoins/docs/usdc-on-main-networks
       contractAddress = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'; // USDC Mainnet
       break;
-    case 5:
-      contractAddress = '0x2f3a40a3db8a7e3d09b0adfefbce4f6f81927557'; // USDC Goerli (unofficial)
+    case 11155111:
+      // https://developers.circle.com/stablecoins/docs/usdc-on-test-networks
+      contractAddress = '0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238'; // USDC Sepolia
       break;
   }
 
@@ -34,7 +36,7 @@ const Token = () => {
   if (!contractAddress) {
     return (
       <Wrapper title="useToken">
-        <p>Unsupported network. Please switch to Goerli or Mainnet.</p>
+        <p>Unsupported network. Please switch to Sepolia or Mainnet.</p>
       </Wrapper>
     );
   }

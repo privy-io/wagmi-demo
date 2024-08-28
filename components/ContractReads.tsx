@@ -13,8 +13,8 @@ const ContractReads = () => {
   let contractAddress: AddressString | undefined;
   switch (chain?.id) {
     case 1:
-    case 5:
-      contractAddress = '0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85'; // ENS Mainnet and Goerli Base Registrar
+    case 11155111:
+      contractAddress = '0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85'; // ENS Mainnet and Sepolia Base Registrar
       break;
   }
 
@@ -45,7 +45,7 @@ const ContractReads = () => {
   if (!contractAddress) {
     return (
       <Wrapper title="useContractReads">
-        <p>Unsupported network. Please switch to Goerli or Mainnet.</p>
+        <p>Unsupported network. Please switch to Sepolia or Mainnet.</p>
       </Wrapper>
     );
   }
