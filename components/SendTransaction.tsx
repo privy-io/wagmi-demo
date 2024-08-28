@@ -19,7 +19,7 @@ const SendTransaction = () => {
   return (
     <Wrapper title="useSendTransaction">
       <div className="rounded bg-red-400 px-2 py-1 text-sm text-white">
-        We recommend doing this on goerli.
+        We recommend doing this on sepolia.
       </div>
       <Button
         cta="Send to privy.io.eth"

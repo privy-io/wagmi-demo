@@ -8,11 +8,7 @@ import {useSwitchChain} from 'wagmi';
 const SwitchNetwork = () => {
   const {chain} = useAccount();
 
-  const {
-    chains,
-    error: switchNetworkError,
-    switchChain,
-  } = useSwitchChain();
+  const {chains, error: switchNetworkError, switchChain} = useSwitchChain();
 
   return (
     <>

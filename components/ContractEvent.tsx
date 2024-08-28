@@ -2,18 +2,17 @@
 
 import Wrapper from 'components/Wrapper';
 import {useState} from 'react';
+import type {Log} from 'viem';
 import {useWatchContractEvent, useAccount} from 'wagmi';
 
 import MonoLabel from './MonoLabel';
-import type {Log} from 'viem';
 
 const ContractEvent = () => {
   const {chain} = useAccount();
   const [logs, setLogs] = useState<Log[] | null>(null);
 
-
   useWatchContractEvent({
-    address: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e', // ENS Mainnet and Goerli Registry
+    address: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e', // ENS Mainnet and Sepolia Registry
     abi: [
       {
         anonymous: false,
@@ -58,7 +57,7 @@ const ContractEvent = () => {
   if (chain.id !== 1 && chain.id !== 5) {
     return (
       <Wrapper title="useWatchContractEvent">
-        <p>Unsupported network. Please switch to Goerli or Mainnet.</p>
+        <p>Unsupported network. Please switch to Sepolia or Mainnet.</p>
       </Wrapper>
     );
   }

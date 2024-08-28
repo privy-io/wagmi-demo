@@ -14,7 +14,7 @@ const SignMessage = () => {
       onSuccess: () => {
         console.log('Sign Message Success');
       },
-    }
+    },
   });
   return (
     <>
