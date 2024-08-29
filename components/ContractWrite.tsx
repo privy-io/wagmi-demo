@@ -4,6 +4,7 @@ import Wrapper from 'components/Wrapper';
 import {shorten, type AddressString} from 'lib/utils';
 import {useEffect} from 'react';
 import {parseEther} from 'viem';
+import {sepolia} from 'viem/chains';
 import {useAccount, useWriteContract} from 'wagmi';
 
 import Button from './Button';
@@ -559,7 +560,7 @@ const ABI = [
 const ContractWrite = () => {
   const {chain, address} = useAccount();
 
-  const contractAddress: AddressString | undefined = '0x74f1AFF6c19F8e1443Ad75087C81BFe6685fd8e0'; // WagmiConnectorDemo on Sepolia
+  const contractAddress: AddressString = '0x7958b71e50725e769fc1197da8655b84450a7666'; // WagmiConnectorDemo on Sepolia
 
   const {data, error, isError, isPending, writeContract} = useWriteContract();
 
@@ -575,7 +576,7 @@ const ContractWrite = () => {
     );
   }
 
-  if (!contractAddress) {
+  if (chain.id !== sepolia.id) {
     return (
       <Wrapper title="useContractWrite">
         <p>Unsupported network. Please switch to Sepolia.</p>
@@ -600,7 +601,7 @@ const ContractWrite = () => {
           onClick_={() =>
             writeContract?.({
               abi: ABI,
-              address: '0x7958b71e50725e769fc1197da8655b84450a7666',
+              address: contractAddress,
               functionName: 'safeMint',
               args: [address],
               value: parseEther('0.001'),
