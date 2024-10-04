@@ -18,7 +18,7 @@
     "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
-    "@privy-io/react-auth": "1.83.1",
+    "@privy-io/react-auth": "^1.88.3",
     "@privy-io/wagmi": "0.2.12",
     "@tailwindcss/forms": "^0.5.7",
     "@tanstack/react-query": "^5",
