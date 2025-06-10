@@ -6,6 +6,7 @@ import {mainnet, sepolia} from 'viem/chains';
 
 import type {PrivyClientConfig} from '@privy-io/react-auth';
 import {PrivyProvider} from '@privy-io/react-auth';
+import {SmartWalletsProvider} from '@privy-io/react-auth/smart-wallets';
 import {WagmiProvider, createConfig} from '@privy-io/wagmi';
 
 const queryClient = new QueryClient();
@@ -22,7 +23,6 @@ const privyConfig: PrivyClientConfig = {
   embeddedWallets: {
     createOnLogin: 'users-without-wallets',
     requireUserPasswordOnCreate: true,
-    noPromptOnSignature: false,
   },
   loginMethods: ['wallet', 'email', 'sms'],
   appearance: {
@@ -32,18 +32,14 @@ const privyConfig: PrivyClientConfig = {
 
 export default function Providers({children}: {children: React.ReactNode}) {
   return (
-    <PrivyProvider
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      apiUrl={process.env.NEXT_PUBLIC_PRIVY_AUTH_URL as string}
-      appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string}
-      config={privyConfig}
-    >
-      <QueryClientProvider client={queryClient}>
-        <WagmiProvider config={wagmiConfig} reconnectOnMount={false}>
-          {children}
-        </WagmiProvider>
-      </QueryClientProvider>
+    <PrivyProvider appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string} config={privyConfig}>
+      <SmartWalletsProvider>
+        <QueryClientProvider client={queryClient}>
+          <WagmiProvider config={wagmiConfig} reconnectOnMount={false}>
+            {children}
+          </WagmiProvider>
+        </QueryClientProvider>
+      </SmartWalletsProvider>
     </PrivyProvider>
   );
 }

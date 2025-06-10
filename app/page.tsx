@@ -23,6 +23,7 @@ import Transaction from 'components/Transaction';
 import WaitForTransaction from 'components/WaitForTransaction';
 import WalletClient from 'components/WalletClient';
 import WatchPendingTransactions from 'components/WatchPendingTransactions';
+import {useEmbeddedSmartAccountConnectorV2} from 'components/useSmartWagmiHook';
 import {shorten} from 'lib/utils';
 import Image from 'next/image';
 import {useAccount, useDisconnect} from 'wagmi';
@@ -44,6 +45,7 @@ export default function Home() {
   // WAGMI hooks
   const {address, isConnected, isConnecting, isDisconnected} = useAccount();
   const {disconnect} = useDisconnect();
+  useEmbeddedSmartAccountConnectorV2();
   const {setActiveWallet} = useSetActiveWallet();
 
   if (!ready) {
