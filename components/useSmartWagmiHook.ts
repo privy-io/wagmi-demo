@@ -2,9 +2,10 @@ import EventEmitter from 'events';
 import {useEffect} from 'react';
 import type {EIP1193Parameters, EIP1193RequestFn} from 'viem';
 import {getAddress, hexToBigInt} from 'viem';
-import {useConfig, useConnectors, useReconnect} from 'wagmi';
+import {useChainId, useConfig, useConnectors, useReconnect} from 'wagmi';
 import {injected} from 'wagmi/connectors';
 
+import type {SmartWalletClientType} from '@privy-io/react-auth/smart-wallets';
 import {useSmartWallets} from '@privy-io/react-auth/smart-wallets';
 
 /**
@@ -19,7 +20,8 @@ import {useSmartWallets} from '@privy-io/react-auth/smart-wallets';
 export const useEmbeddedSmartAccountConnectorV2 = () => {
   const connectors = useConnectors();
   const config = useConfig();
-  const {client} = useSmartWallets();
+  const id = useChainId();
+  const {client: isReady, getClientForChain} = useSmartWallets();
   const {reconnect} = useReconnect();
 
   useEffect(() => {
@@ -30,9 +32,13 @@ export const useEmbeddedSmartAccountConnectorV2 = () => {
       if (existingSmartAccountConnector) return;
 
       // If no client exists, do not run this logic
-      if (!client) return;
+      if (!isReady) return;
 
-      const smartAccountProvider = new SmartWalletEIP1193Provider(client);
+      const client = await getClientForChain({id});
+
+      if (!client || !getClientForChain) return;
+
+      const smartAccountProvider = new SmartWalletEIP1193Provider(client, getClientForChain);
 
       const smartAccountConnectorConstructor = injected({
         target: {
@@ -55,15 +61,22 @@ export const useEmbeddedSmartAccountConnectorV2 = () => {
     };
 
     void setupSmartAccountConnector();
-  }, [client, config, connectors, reconnect]);
+  }, [config, connectors, getClientForChain, id, isReady, reconnect]);
 };
 
 class SmartWalletEIP1193Provider extends EventEmitter {
-  private smartWalletClient: ReturnType<typeof useSmartWallets>['client'];
+  private smartWalletClient: SmartWalletClientType;
+  private readonly getClientForChain: (params: {
+    id: number;
+  }) => Promise<SmartWalletClientType | undefined>;
 
-  constructor(client?: ReturnType<typeof useSmartWallets>['client']) {
+  constructor(
+    client: SmartWalletClientType,
+    getClientForChain: (params: {id: number}) => Promise<SmartWalletClientType | undefined>,
+  ) {
     super();
     this.smartWalletClient = client;
+    this.getClientForChain = getClientForChain;
   }
 
   async request({method, params = []}: EIP1193Parameters): ReturnType<EIP1193RequestFn> {
@@ -72,7 +85,6 @@ class SmartWalletEIP1193Provider extends EventEmitter {
       case 'eth_accounts':
         return this.handleEthRequestAccounts();
       case 'eth_sendTransaction':
-        console.log(params);
         return this.handleEthSendTransaction(params);
       case 'personal_sign':
         return this.handlePersonalSign(params as any);
@@ -86,7 +98,13 @@ class SmartWalletEIP1193Provider extends EventEmitter {
         if (!this.smartWalletClient?.account) {
           throw new Error('account not connected!');
         }
-        this.smartWalletClient.switchChain({id: Number(chainId)});
+        const newClient = await this.getClientForChain({
+          id: parseInt(chainId, 16),
+        });
+        if (!newClient) {
+          throw new Error(`No smart wallet client found for chain ID ${chainId}`);
+        }
+        this.smartWalletClient = newClient;
         this.emit('chainChanged', chainId);
         return null;
       default:
