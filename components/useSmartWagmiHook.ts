@@ -36,6 +36,7 @@ export const useEmbeddedSmartAccountConnectorV2 = () => {
 
       const smartAccountConnectorConstructor = injected({
         target: {
+          // @ts-expect-error ignore type
           provider: smartAccountProvider,
           id: 'io.privy.smart_wallet',
           name: 'io.privy.smart_wallet',
@@ -54,7 +55,7 @@ export const useEmbeddedSmartAccountConnectorV2 = () => {
     };
 
     void setupSmartAccountConnector();
-  }, [connectors, config, client, reconnect]);
+  }, [client, config, connectors, reconnect]);
 };
 
 class SmartWalletEIP1193Provider extends EventEmitter {
@@ -81,11 +82,13 @@ class SmartWalletEIP1193Provider extends EventEmitter {
       case 'eth_signTransaction':
         throw new Error('eth_signTransaction is not supported. Use eth_sendTransaction instead.');
       case 'wallet_switchEthereumChain':
-        console.log(params);
-        return await this.smartWalletClient?.switchChain({
-          // @ts-expect-error ignore params
-          id: Number(params[0].chainId),
-        });
+        const [{chainId}] = params as [{chainId: string}];
+        if (!this.smartWalletClient?.account) {
+          throw new Error('account not connected!');
+        }
+        this.smartWalletClient.switchChain({id: Number(chainId)});
+        this.emit('chainChanged', chainId);
+        return null;
       default:
         return this.smartWalletClient?.transport.request({method, params});
     }

@@ -2,7 +2,7 @@
 
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {http} from 'viem';
-import {mainnet, sepolia} from 'viem/chains';
+import {baseSepolia, sepolia} from 'viem/chains';
 
 import type {PrivyClientConfig} from '@privy-io/react-auth';
 import {PrivyProvider} from '@privy-io/react-auth';
@@ -12,9 +12,9 @@ import {WagmiProvider, createConfig} from '@privy-io/wagmi';
 const queryClient = new QueryClient();
 
 export const wagmiConfig = createConfig({
-  chains: [mainnet, sepolia],
+  chains: [baseSepolia, sepolia],
   transports: {
-    [mainnet.id]: http(),
+    [baseSepolia.id]: http(),
     [sepolia.id]: http(),
   },
 });
