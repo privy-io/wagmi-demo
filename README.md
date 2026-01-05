@@ -1,5 +1,7 @@
 # Privy x Wagmi Demo
 
+> **This repository is archived.** For up-to-date examples, please visit [github.com/privy-io/examples](https://github.com/privy-io/examples).
+
 This is a demo NextJS app that uses both [`wagmi`](https://wagmi.sh/) and [Privy](https://www.privy.io/), connecting them with the [`@privy-io/wagmi`](https://www.npmjs.com/package/@privy-io/wagmi) package. 
 
 To try the demo, go to https://wagmi-app.vercel.app/ and login with Privy. As part of login, you'll either connect an external wallet (e.g. MetaMask) or create an embedded wallet associated with your login method. Once connected, click the buttons in the right sidebar to invoke various [`wagmi`](https://wagmi.sh/) hooks, like `useSignMessage`, to interface with your connected wallet. 
